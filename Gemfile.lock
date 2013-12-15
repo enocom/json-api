@@ -28,6 +28,7 @@ GEM
     arel (4.0.1)
     atomic (1.1.14)
     builder (3.1.4)
+    coderay (1.1.0)
     diff-lcs (1.2.5)
     erubis (2.7.0)
     execjs (2.0.2)
@@ -45,11 +46,16 @@ GEM
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    method_source (0.8.2)
     mime-types (1.25.1)
     minitest (4.7.5)
     multi_json (1.8.2)
     pg (0.17.0)
     polyglot (0.3.3)
+    pry (0.9.12.4)
+      coderay (~> 1.0)
+      method_source (~> 0.8)
+      slop (~> 3.4)
     rack (1.5.2)
     rack-test (0.6.2)
       rack (>= 1.0)
@@ -83,6 +89,7 @@ GEM
       railties (>= 4.0.0, < 5.0)
       sass (>= 3.1.10)
       sprockets-rails (~> 2.0.0)
+    slop (3.4.7)
     sprockets (2.10.1)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -111,6 +118,7 @@ DEPENDENCIES
   factory_girl_rails
   jquery-rails
   pg
+  pry
   rails (= 4.0.2)
   rspec-rails
   sass-rails (~> 4.0.0)
