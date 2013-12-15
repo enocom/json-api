@@ -17,8 +17,8 @@ class MoviesController < ApplicationController
   end
 
   def create
-    Movie.create(movie_params)
-    head :no_content
+    movie = Movie.create(movie_params)
+    respond_with movie, location: movie_path(movie)
   end
 
   private
