@@ -8,9 +8,11 @@ describe "movies API" do
 
       get "/movies.json", "", {"Accept" => "application/json"}
 
-      response_body = JSON.parse(response.body)
+      body = JSON.parse(response.body)
       expect(response.status).to be 200
-      expect(response_body.size).to eq 2
+      expect(body.size).to eq 2
+      expect(body.map { |m| m["title"] }).to eq ["The Hobbit",
+                                                 "The Fellowship of the Ring"]
     end
   end
 
@@ -20,9 +22,9 @@ describe "movies API" do
 
       get "/movies/#{m.id}", "", {"Accept" => "application/json"}
 
-      response_body = JSON.parse(response.body)
+      body = JSON.parse(response.body)
       expect(response.status).to be 200
-      expect(response_body["title"]).to eq "2001: A Space Odyssy"
+      expect(body["title"]).to eq "2001: A Space Odyssy"
     end
   end
 
