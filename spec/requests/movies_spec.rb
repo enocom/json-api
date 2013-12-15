@@ -6,7 +6,7 @@ describe "movies API" do
       FactoryGirl.create :movie, title: "The Hobbit"
       FactoryGirl.create :movie, title: "The Fellowship of the Ring"
 
-      get "/movies.json", "", {"Accept" => "application/json"}
+      xhr :get, "/movies"
 
       body = JSON.parse(response.body)
       expect(response.status).to be 200
@@ -20,7 +20,7 @@ describe "movies API" do
     it "returns a requested movie" do
       m = FactoryGirl.create :movie, title: "2001: A Space Odyssy"
 
-      get "/movies/#{m.id}", "", {"Accept" => "application/json"}
+      xhr :get, "/movies/#{m.id}"
 
       body = JSON.parse(response.body)
       expect(response.status).to be 200
@@ -32,9 +32,7 @@ describe "movies API" do
     it "updates a movie" do
       m = FactoryGirl.create :movie, title: "Star Battles"
 
-      put "/movies/#{m.id}",
-          { movie: { title: "Star Wars" } }
-          { "Accept" => "application/json" }
+      xhr :put, "/movies/#{m.id}", { movie: { title: "Star Wars" } }
 
       expect(response.status).to be 204
       expect(m.reload.title).to eq "Star Wars"
@@ -43,9 +41,7 @@ describe "movies API" do
 
   describe "POST /movies" do
     it "creates a movie" do
-      post "/movies.json",
-            { movie: { title: "The Empire Strikes Back" } }
-            {"Accept" => "application/json"}
+      xhr :post, "/movies", { movie: { title: "The Empire Strikes Back" } }
 
       expect(response.status).to be 201
       expect(response["Location"]).to eq "/movies/#{Movie.first.id}"
