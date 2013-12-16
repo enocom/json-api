@@ -6,19 +6,15 @@ class MoviesController < ApplicationController
   end
 
   def show
-    movie = Movie.find(params[:id])
-    respond_with movie
+    respond_with Movie.find(params[:id])
   end
 
   def update
-    movie = Movie.find(params[:id])
-    movie.update_attributes(movie_params)
-    head :no_content
+    respond_with Movie.update(params[:id], movie_params)
   end
 
   def create
-    movie = Movie.create(movie_params)
-    respond_with movie, location: movie_path(movie)
+    respond_with Movie.create(movie_params)
   end
 
   def destroy

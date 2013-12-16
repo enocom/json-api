@@ -44,7 +44,7 @@ describe "movies API" do
       xhr :post, "/movies", { movie: { title: "The Empire Strikes Back" } }
 
       expect(response.status).to be 201
-      expect(response["Location"]).to eq "/movies/#{Movie.first.id}"
+      expect(response["Location"]).to include "/movies/#{Movie.first.id}"
     end
   end
 
