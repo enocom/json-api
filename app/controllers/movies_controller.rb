@@ -21,6 +21,10 @@ class MoviesController < ApplicationController
     respond_with movie, location: movie_path(movie)
   end
 
+  def destroy
+    respond_with Movie.destroy(params[:id])
+  end
+
   private
 
   def movie_params

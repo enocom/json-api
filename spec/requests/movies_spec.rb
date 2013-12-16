@@ -47,4 +47,15 @@ describe "movies API" do
       expect(response["Location"]).to eq "/movies/#{Movie.first.id}"
     end
   end
+
+  describe "DELETE /movies/:id" do
+    it "deletes a movie" do
+      m = FactoryGirl.create :movie, title: "The Shining"
+
+      xhr :delete, "/movies/#{m.id}"
+
+      expect(response.status).to be 204
+      expect(Movie.count).to eq 0
+    end
+  end
 end
