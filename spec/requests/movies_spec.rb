@@ -6,13 +6,13 @@ describe "movies API" do
       FactoryGirl.create :movie, title: "The Hobbit"
       FactoryGirl.create :movie, title: "The Fellowship of the Ring"
 
-      xhr :get, "/movies"
+      get "/movies", {}, { "HTTP_ACCEPT" => "application/json" }
 
       body = JSON.parse(response.body)
-      expect(response.status).to be 200
-      expect(body.size).to eq 2
-      expect(body.map { |m| m["title"] }).to eq ["The Hobbit",
-                                                 "The Fellowship of the Ring"]
+      movie_titles = body.map { |m| m["title"] }
+
+      expect(movie_titles).to match_array(["The Hobbit",
+                                           "The Fellowship of the Ring"])
     end
   end
 
@@ -20,10 +20,11 @@ describe "movies API" do
     it "returns a requested movie" do
       m = FactoryGirl.create :movie, title: "2001: A Space Odyssy"
 
-      xhr :get, "/movies/#{m.id}"
+      get "/movies/#{m.id}", {}, { "HTTP_ACCEPT" => "application/json" }
+
+      expect(response.status).to be 200
 
       body = JSON.parse(response.body)
-      expect(response.status).to be 200
       expect(body["title"]).to eq "2001: A Space Odyssy"
     end
   end
@@ -32,7 +33,10 @@ describe "movies API" do
     it "updates a movie" do
       m = FactoryGirl.create :movie, title: "Star Battles"
 
-      xhr :put, "/movies/#{m.id}", { movie: { title: "Star Wars" } }
+      put "/movies/#{m.id}",
+          { movie: { title: "Star Wars" } }.to_json,
+          { "HTTP_ACCEPT" => "application/json",
+            "CONTENT_TYPE" => "application/json" }
 
       expect(response.status).to be 204
       expect(m.reload.title).to eq "Star Wars"
@@ -41,7 +45,10 @@ describe "movies API" do
 
   describe "POST /movies" do
     it "creates a movie" do
-      xhr :post, "/movies", { movie: { title: "The Empire Strikes Back" } }
+      post "/movies",
+           { movie: { title: "The Empire Strikes Back" } }.to_json,
+          { "HTTP_ACCEPT" => "application/json",
+            "CONTENT_TYPE" => "application/json" }
 
       expect(response.status).to be 201
       expect(response["Location"]).to include "/movies/#{Movie.first.id}"
@@ -52,7 +59,7 @@ describe "movies API" do
     it "deletes a movie" do
       m = FactoryGirl.create :movie, title: "The Shining"
 
-      xhr :delete, "/movies/#{m.id}"
+      delete "/movies/#{m.id}", {}, { "HTTP_ACCEPT" => "application/json" }
 
       expect(response.status).to be 204
       expect(Movie.count).to eq 0
