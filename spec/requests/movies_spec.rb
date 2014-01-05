@@ -50,8 +50,8 @@ describe "movies API" do
           { "HTTP_ACCEPT" => "application/json",
             "CONTENT_TYPE" => "application/json" }
 
-      expect(response.status).to be 201
-      expect(response["Location"]).to include "/movies/#{Movie.first.id}"
+      expect(response.status).to eq 201
+      expect(Movie.first.title).to eq "The Empire Strikes Back"
     end
   end
 
