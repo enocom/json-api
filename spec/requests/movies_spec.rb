@@ -8,6 +8,8 @@ describe "movies API" do
 
       get "/movies", {}, { "HTTP_ACCEPT" => "application/json" }
 
+      expect(response.status).to eq 200
+
       body = JSON.parse(response.body)
       movie_titles = body.map { |m| m["title"] }
 
@@ -33,10 +35,18 @@ describe "movies API" do
     it "updates a movie" do
       m = FactoryGirl.create :movie, title: "Star Battles"
 
-      put "/movies/#{m.id}",
-          { movie: { title: "Star Wars" } }.to_json,
-          { "HTTP_ACCEPT" => "application/json",
-            "CONTENT_TYPE" => "application/json" }
+      movie_params = {
+        "movie" => {
+          "title" => "Star Wars"
+        }
+      }.to_json
+
+      request_headers = {
+        "HTTP_ACCEPT" => "application/json",
+        "CONTENT_TYPE" => "application/json"
+      }
+
+      put "/movies/#{m.id}", movie_params, request_headers
 
       expect(response.status).to be 204
       expect(m.reload.title).to eq "Star Wars"
@@ -45,13 +55,21 @@ describe "movies API" do
 
   describe "POST /movies" do
     it "creates a movie" do
-      post "/movies",
-           { movie: { title: "The Empire Strikes Back" } }.to_json,
-          { "HTTP_ACCEPT" => "application/json",
-            "CONTENT_TYPE" => "application/json" }
+      movie_params = {
+        "movie" => {
+          "title" => "Indiana Jones and the Temple of Doom"
+        }
+      }.to_json
+
+      request_headers = {
+        "HTTP_ACCEPT" => "application/json",
+        "CONTENT_TYPE" => "application/json"
+      }
+
+      post "/movies", movie_params, request_headers
 
       expect(response.status).to eq 201
-      expect(Movie.first.title).to eq "The Empire Strikes Back"
+      expect(Movie.first.title).to eq "Indiana Jones and the Temple of Doom"
     end
   end
 
