@@ -6,7 +6,7 @@ describe "movies API" do
       FactoryGirl.create :movie, title: "The Hobbit"
       FactoryGirl.create :movie, title: "The Fellowship of the Ring"
 
-      get "/movies", {}, { "HTTP_ACCEPT" => "application/json" }
+      get "/movies", {}, { "Accept" => "application/json" }
 
       expect(response.status).to eq 200
 
@@ -22,7 +22,7 @@ describe "movies API" do
     it "returns a requested movie" do
       m = FactoryGirl.create :movie, title: "2001: A Space Odyssy"
 
-      get "/movies/#{m.id}", {}, { "HTTP_ACCEPT" => "application/json" }
+      get "/movies/#{m.id}", {}, { "Accept" => "application/json" }
 
       expect(response.status).to be 200
 
@@ -42,8 +42,8 @@ describe "movies API" do
       }.to_json
 
       request_headers = {
-        "HTTP_ACCEPT" => "application/json",
-        "CONTENT_TYPE" => "application/json"
+        "Accept" => "application/json",
+        "Content-Type" => "application/json"
       }
 
       put "/movies/#{m.id}", movie_params, request_headers
@@ -62,8 +62,8 @@ describe "movies API" do
       }.to_json
 
       request_headers = {
-        "HTTP_ACCEPT" => "application/json",
-        "CONTENT_TYPE" => "application/json"
+        "Accept" => "application/json",
+        "Content-Type" => "application/json"
       }
 
       post "/movies", movie_params, request_headers
@@ -77,7 +77,7 @@ describe "movies API" do
     it "deletes a movie" do
       m = FactoryGirl.create :movie, title: "The Shining"
 
-      delete "/movies/#{m.id}", {}, { "HTTP_ACCEPT" => "application/json" }
+      delete "/movies/#{m.id}", {}, { "Accept" => "application/json" }
 
       expect(response.status).to be 204
       expect(Movie.count).to eq 0
