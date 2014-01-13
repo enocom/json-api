@@ -1,4 +1,8 @@
 class MoviesController < ApplicationController
+  skip_before_filter :verify_authenticity_token
+  before_filter :authenticate_user_from_token!
+  before_filter :authenticate_user!
+
   respond_to :json
 
   def index
@@ -25,5 +29,9 @@ class MoviesController < ApplicationController
 
   def movie_params
     params.require(:movie).permit(:title)
+  end
+
+  def default_serializer_options
+    { root: false }
   end
 end

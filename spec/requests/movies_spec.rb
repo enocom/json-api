@@ -1,86 +1,140 @@
 require "spec_helper"
 
 describe "movies API" do
+  let(:user) { FactoryGirl.create :user }
+  let(:signed_in_payload) {
+    { user_email: user.email,
+      user_token: user.authentication_token }
+  }
+
   describe "GET /movies" do
-    it "returns all the movies" do
+    before do
       FactoryGirl.create :movie, title: "The Hobbit"
       FactoryGirl.create :movie, title: "The Fellowship of the Ring"
+    end
 
-      get "/movies", {}, { "Accept" => "application/json" }
+    context "when signed in" do
+      it "returns all the movies" do
+        get "/movies", signed_in_payload, { "Accept" => "application/json" }
 
-      expect(response.status).to eq 200
+        expect(response.status).to eq 200
 
-      body = JSON.parse(response.body)
-      movie_titles = body.map { |m| m["title"] }
+        body = JSON.parse(response.body)
+        movie_titles = body.map { |m| m["title"] }
 
-      expect(movie_titles).to match_array(["The Hobbit",
-                                           "The Fellowship of the Ring"])
+        expect(movie_titles).to match_array(["The Hobbit",
+                                             "The Fellowship of the Ring"])
+      end
+    end
+
+    context "when not signed in" do
+      it "returns a 401 status" do
+        get "/movies", {}, { "Accept" => "application/json" }
+        expect(response.status).to eq 401
+      end
     end
   end
 
   describe "GET /movies/:id" do
-    it "returns a requested movie" do
-      m = FactoryGirl.create :movie, title: "2001: A Space Odyssy"
+    let(:movie) { FactoryGirl.create(:movie, title: "2001: A Space Odyssy") }
 
-      get "/movies/#{m.id}", {}, { "Accept" => "application/json" }
+    context "when signed in" do
+      it "returns a requested movie" do
+        get "/movies/#{movie.id}", signed_in_payload,
+            { "Accept" => "application/json" }
 
-      expect(response.status).to be 200
+        expect(response.status).to be 200
 
-      body = JSON.parse(response.body)
-      expect(body["title"]).to eq "2001: A Space Odyssy"
+        body = JSON.parse(response.body)
+        expect(body["title"]).to eq "2001: A Space Odyssy"
+      end
+    end
+
+    context "when not signed in" do
+      it "returns a 401 status" do
+        get "/movies/#{movie.id}", {}, { "Accept" => "application/json" }
+        expect(response.status).to be 401
+      end
     end
   end
 
   describe "PUT /movies/:id" do
-    it "updates a movie" do
-      m = FactoryGirl.create :movie, title: "Star Battles"
+    let(:movie) { FactoryGirl.create(:movie, title: "Star Battles") }
+    let(:headers) {
+        { "Accept" => "application/json",
+          "Content-Type" => "application/json" }
+    }
 
-      movie_params = {
-        "movie" => {
-          "title" => "Star Wars"
+    context "when signed in" do
+      it "updates a movie" do
+        movie_params = {
+          "movie" => {
+            "title" => "Star Wars"
+          }
         }
-      }.to_json
 
-      request_headers = {
-        "Accept" => "application/json",
-        "Content-Type" => "application/json"
-      }
+        put "/movies/#{movie.id}",
+          movie_params.merge(signed_in_payload).to_json,
+          headers
 
-      put "/movies/#{m.id}", movie_params, request_headers
+        expect(response.status).to be 204
+        expect(movie.reload.title).to eq "Star Wars"
+      end
+    end
 
-      expect(response.status).to be 204
-      expect(m.reload.title).to eq "Star Wars"
+    context "when not signed in" do
+      it "returns a 401 status" do
+        put "/movies/#{movie.id}", {}, headers
+        expect(response.status).to eq 401
+      end
     end
   end
 
   describe "POST /movies" do
-    it "creates a movie" do
-      movie_params = {
-        "movie" => {
-          "title" => "Indiana Jones and the Temple of Doom"
-        }
-      }.to_json
+    let(:movie_params) {
+       { "movie" => { "title" => "Indiana Jones and the Temple of Doom" } }
+    }
 
-      request_headers = {
-        "Accept" => "application/json",
-        "Content-Type" => "application/json"
-      }
+    let(:headers) {
+      { "Accept" => "application/json",
+        "Content-Type" => "application/json" }
+    }
 
-      post "/movies", movie_params, request_headers
+    context "when signed in" do
+      it "creates a movie" do
+        post "/movies", movie_params.merge(signed_in_payload).to_json, headers
 
-      expect(response.status).to eq 201
-      expect(Movie.first.title).to eq "Indiana Jones and the Temple of Doom"
+        expect(response.status).to eq 201
+        expect(Movie.first.title).to eq "Indiana Jones and the Temple of Doom"
+      end
+    end
+
+    context "when not signed in" do
+      it "returns a 401 status" do
+        post "/movies", movie_params.to_json, headers
+        expect(response.status).to eq 401
+      end
     end
   end
 
   describe "DELETE /movies/:id" do
-    it "deletes a movie" do
-      m = FactoryGirl.create :movie, title: "The Shining"
+    let(:movie) { FactoryGirl.create :movie, title: "The Shining" }
+    let(:headers) { { "Accept" => "application/json" } }
 
-      delete "/movies/#{m.id}", {}, { "Accept" => "application/json" }
+    context "when signed in" do
+      it "deletes a movie" do
+        delete "/movies/#{movie.id}", signed_in_payload, headers
 
-      expect(response.status).to be 204
-      expect(Movie.count).to eq 0
+        expect(response.status).to be 204
+        expect(Movie.count).to eq 0
+      end
+    end
+
+    context "when not signed in" do
+      it "returns a 401 status" do
+        delete "/movies/#{movie.id}", {}, headers
+        expect(response.status).to be 401
+      end
     end
   end
 end
