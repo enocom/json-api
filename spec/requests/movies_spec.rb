@@ -2,13 +2,12 @@ require "spec_helper"
 
 describe "movies API" do
   let(:user) { FactoryGirl.create :user }
-  let(:signed_in_payload) {
-    { user_email: user.email,
-      user_token: user.authentication_token }
-  }
   let(:accept_json) { { "Accept" => "application/json" } }
   let(:json_content_type) { { "Content-Type" => "application/json" } }
   let(:accept_and_return_json) { accept_json.merge(json_content_type) }
+  let(:signed_in_header) {
+    { "X-API-KEY" => user.authentication_token }
+  }
 
   describe "GET /movies" do
     before do
@@ -18,7 +17,7 @@ describe "movies API" do
 
     context "when signed in" do
       it "returns all the movies" do
-        get "/movies", signed_in_payload, accept_json
+        get "/movies", {}, accept_json.merge(signed_in_header)
 
         expect(response.status).to eq 200
 
@@ -43,7 +42,7 @@ describe "movies API" do
 
     context "when signed in" do
       it "returns a requested movie" do
-        get "/movies/#{movie.id}", signed_in_payload, accept_json
+        get "/movies/#{movie.id}", {}, accept_json.merge(signed_in_header)
 
         expect(response.status).to be 200
 
@@ -67,8 +66,8 @@ describe "movies API" do
     context "when signed in" do
       it "updates a movie" do
         put "/movies/#{movie.id}",
-          movie_params.merge(signed_in_payload).to_json,
-          accept_and_return_json
+          movie_params.to_json,
+          accept_and_return_json.merge(signed_in_header)
 
         expect(response.status).to be 204
         expect(movie.reload.title).to eq "Star Wars"
@@ -90,8 +89,8 @@ describe "movies API" do
 
     context "when signed in" do
       it "creates a movie" do
-        post "/movies", movie_params.merge(signed_in_payload).to_json,
-          accept_and_return_json
+        post "/movies", movie_params.to_json,
+          accept_and_return_json.merge(signed_in_header)
 
         expect(response.status).to eq 201
         expect(Movie.first.title).to eq "Indiana Jones and the Temple of Doom"
@@ -111,7 +110,7 @@ describe "movies API" do
 
     context "when signed in" do
       it "deletes a movie" do
-        delete "/movies/#{movie.id}", signed_in_payload, accept_json
+        delete "/movies/#{movie.id}", {}, accept_json.merge(signed_in_header)
 
         expect(response.status).to be 204
         expect(Movie.count).to eq 0

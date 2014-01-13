@@ -6,15 +6,10 @@ class ApplicationController < ActionController::Base
   private
 
   def authenticate_user_from_token!
-    # This code is taken from Jose Valim's gist:
-    # https://gist.github.com/josevalim/fb706b1e933ef01e4fb6
-    user_email = params[:user_email].presence
-    user       = user_email && User.find_by(email: user_email)
+    api_token = request.headers["X-API-KEY"].presence
+    user      = api_token && User.find_by(authentication_token: api_token)
 
-    # Notice how we use Devise.secure_compare to compare the token
-    # in the database with the token given in the params, mitigating
-    # timing attacks.
-    if user && Devise.secure_compare(user.authentication_token, params[:user_token])
+    if user
       sign_in user, store: false
     end
   end
