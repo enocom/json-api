@@ -6,6 +6,9 @@ describe "movies API" do
     { user_email: user.email,
       user_token: user.authentication_token }
   }
+  let(:accept_json) { { "Accept" => "application/json" } }
+  let(:json_content_type) { { "Content-Type" => "application/json" } }
+  let(:accept_and_return_json) { accept_json.merge(json_content_type) }
 
   describe "GET /movies" do
     before do
@@ -15,7 +18,7 @@ describe "movies API" do
 
     context "when signed in" do
       it "returns all the movies" do
-        get "/movies", signed_in_payload, { "Accept" => "application/json" }
+        get "/movies", signed_in_payload, accept_json
 
         expect(response.status).to eq 200
 
@@ -29,7 +32,7 @@ describe "movies API" do
 
     context "when not signed in" do
       it "returns a 401 status" do
-        get "/movies", {}, { "Accept" => "application/json" }
+        get "/movies", {}, accept_json
         expect(response.status).to eq 401
       end
     end
@@ -40,8 +43,7 @@ describe "movies API" do
 
     context "when signed in" do
       it "returns a requested movie" do
-        get "/movies/#{movie.id}", signed_in_payload,
-            { "Accept" => "application/json" }
+        get "/movies/#{movie.id}", signed_in_payload, accept_json
 
         expect(response.status).to be 200
 
@@ -52,7 +54,7 @@ describe "movies API" do
 
     context "when not signed in" do
       it "returns a 401 status" do
-        get "/movies/#{movie.id}", {}, { "Accept" => "application/json" }
+        get "/movies/#{movie.id}", {}, accept_json
         expect(response.status).to be 401
       end
     end
@@ -60,10 +62,6 @@ describe "movies API" do
 
   describe "PUT /movies/:id" do
     let(:movie) { FactoryGirl.create(:movie, title: "Star Battles") }
-    let(:headers) {
-        { "Accept" => "application/json",
-          "Content-Type" => "application/json" }
-    }
 
     context "when signed in" do
       it "updates a movie" do
@@ -75,7 +73,7 @@ describe "movies API" do
 
         put "/movies/#{movie.id}",
           movie_params.merge(signed_in_payload).to_json,
-          headers
+          accept_and_return_json
 
         expect(response.status).to be 204
         expect(movie.reload.title).to eq "Star Wars"
@@ -84,7 +82,7 @@ describe "movies API" do
 
     context "when not signed in" do
       it "returns a 401 status" do
-        put "/movies/#{movie.id}", {}, headers
+        put "/movies/#{movie.id}", {}, accept_and_return_json
         expect(response.status).to eq 401
       end
     end
@@ -95,14 +93,10 @@ describe "movies API" do
        { "movie" => { "title" => "Indiana Jones and the Temple of Doom" } }
     }
 
-    let(:headers) {
-      { "Accept" => "application/json",
-        "Content-Type" => "application/json" }
-    }
-
     context "when signed in" do
       it "creates a movie" do
-        post "/movies", movie_params.merge(signed_in_payload).to_json, headers
+        post "/movies", movie_params.merge(signed_in_payload).to_json,
+          accept_and_return_json
 
         expect(response.status).to eq 201
         expect(Movie.first.title).to eq "Indiana Jones and the Temple of Doom"
@@ -111,7 +105,7 @@ describe "movies API" do
 
     context "when not signed in" do
       it "returns a 401 status" do
-        post "/movies", movie_params.to_json, headers
+        post "/movies", movie_params.to_json, accept_and_return_json
         expect(response.status).to eq 401
       end
     end
@@ -119,11 +113,10 @@ describe "movies API" do
 
   describe "DELETE /movies/:id" do
     let(:movie) { FactoryGirl.create :movie, title: "The Shining" }
-    let(:headers) { { "Accept" => "application/json" } }
 
     context "when signed in" do
       it "deletes a movie" do
-        delete "/movies/#{movie.id}", signed_in_payload, headers
+        delete "/movies/#{movie.id}", signed_in_payload, accept_json
 
         expect(response.status).to be 204
         expect(Movie.count).to eq 0
@@ -132,7 +125,7 @@ describe "movies API" do
 
     context "when not signed in" do
       it "returns a 401 status" do
-        delete "/movies/#{movie.id}", {}, headers
+        delete "/movies/#{movie.id}", {}, accept_json
         expect(response.status).to be 401
       end
     end
