@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   private
 
   def authenticate_user_from_token!
-    # This code is take from Jose Valim's gist
+    # This code is taken from Jose Valim's gist:
     # https://gist.github.com/josevalim/fb706b1e933ef01e4fb6
     user_email = params[:user_email].presence
     user       = user_email && User.find_by(email: user_email)
