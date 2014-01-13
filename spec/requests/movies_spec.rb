@@ -62,15 +62,10 @@ describe "movies API" do
 
   describe "PUT /movies/:id" do
     let(:movie) { FactoryGirl.create(:movie, title: "Star Battles") }
+    let(:movie_params) { { "movie" => { "title" => "Star Wars" } } }
 
     context "when signed in" do
       it "updates a movie" do
-        movie_params = {
-          "movie" => {
-            "title" => "Star Wars"
-          }
-        }
-
         put "/movies/#{movie.id}",
           movie_params.merge(signed_in_payload).to_json,
           accept_and_return_json
@@ -82,7 +77,7 @@ describe "movies API" do
 
     context "when not signed in" do
       it "returns a 401 status" do
-        put "/movies/#{movie.id}", {}, accept_and_return_json
+        put "/movies/#{movie.id}", movie_params.to_json, accept_and_return_json
         expect(response.status).to eq 401
       end
     end
