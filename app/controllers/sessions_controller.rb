@@ -2,11 +2,7 @@ class SessionsController < Devise::SessionsController
   respond_to :json
 
   def create
-    if json_request?
-      json_signin
-    else
-      super
-    end
+    json_request? ? json_signin : super
   end
 
   private
