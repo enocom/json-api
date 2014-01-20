@@ -1,7 +1,6 @@
 source "https://rubygems.org"
 
 gem "active_model_serializers"
-gem "bower-rails"
 gem "devise"
 gem "jquery-rails"
 gem "pg"
