@@ -10,7 +10,7 @@ gem "sass-rails", "~> 4.0.0"
 gem "uglifier", ">= 1.3.0"
 
 group :development, :test do
-  gem "jasmine", git: "https://github.com/pivotal/jasmine-gem.git"
+  gem "jasmine"
   gem "pry"
   gem "rspec-rails"
 end
