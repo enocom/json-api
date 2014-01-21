@@ -1,6 +1,7 @@
 source "https://rubygems.org"
 
 gem "active_model_serializers"
+gem "angularjs-rails-resource"
 gem "angularjs-rails"
 gem "devise"
 gem "jquery-rails"

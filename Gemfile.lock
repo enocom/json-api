@@ -28,6 +28,7 @@ GEM
       thread_safe (~> 0.1)
       tzinfo (~> 0.3.37)
     angularjs-rails (1.2.9)
+    angularjs-rails-resource (0.2.5)
     arel (4.0.1)
     atomic (1.1.14)
     bcrypt-ruby (3.1.2)
@@ -161,6 +162,7 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers
   angularjs-rails
+  angularjs-rails-resource
   capybara
   devise
   factory_girl_rails
