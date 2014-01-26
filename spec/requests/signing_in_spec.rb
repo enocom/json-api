@@ -5,7 +5,7 @@ describe "Signing in to use the API" do
     payload = {}
     headers = { "Accept" => "application/json" }
 
-    get "/movies", payload, headers
+    get "/api/movies", payload, headers
 
     expect(response.status).to be 401
   end
