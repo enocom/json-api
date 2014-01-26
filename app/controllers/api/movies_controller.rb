@@ -31,9 +31,5 @@ module Api
     def movie_params
       params.require(:movie).permit(:title)
     end
-
-    def default_serializer_options
-      { root: false }
-    end
   end
 end
