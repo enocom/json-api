@@ -5,9 +5,6 @@ describe "movies API" do
   let(:accept_json) { { "Accept" => "application/json" } }
   let(:json_content_type) { { "Content-Type" => "application/json" } }
   let(:accept_and_return_json) { accept_json.merge(json_content_type) }
-  let(:signed_in_header) {
-    { "X-API-KEY" => user.authentication_token }
-  }
 
   describe "GET /api/movies" do
     before do
@@ -15,47 +12,29 @@ describe "movies API" do
       FactoryGirl.create :movie, title: "The Fellowship of the Ring"
     end
 
-    context "when signed in" do
-      it "returns all the movies" do
-        get "/api/movies", {}, accept_json.merge(signed_in_header)
+    it "returns all the movies" do
+      get "/api/movies", {}, accept_json
 
-        expect(response.status).to eq 200
+      expect(response.status).to eq 200
 
-        body = JSON.parse(response.body)
-        movie_titles = body.map { |m| m["title"] }
+      body = JSON.parse(response.body)
+      movie_titles = body.map { |m| m["title"] }
 
-        expect(movie_titles).to match_array(["The Hobbit",
-                                             "The Fellowship of the Ring"])
-      end
-    end
-
-    context "when not signed in" do
-      it "returns a 401 status" do
-        get "/api/movies", {}, accept_json
-        expect(response.status).to eq 401
-      end
+      expect(movie_titles).to match_array(["The Hobbit",
+                                           "The Fellowship of the Ring"])
     end
   end
 
   describe "GET /api/movies/:id" do
     let(:movie) { FactoryGirl.create(:movie, title: "2001: A Space Odyssy") }
 
-    context "when signed in" do
-      it "returns a requested movie" do
-        get "/api/movies/#{movie.id}", {}, accept_json.merge(signed_in_header)
+    it "returns a requested movie" do
+      get "/api/movies/#{movie.id}", {}, accept_json
 
-        expect(response.status).to be 200
+      expect(response.status).to be 200
 
-        body = JSON.parse(response.body)
-        expect(body["title"]).to eq "2001: A Space Odyssy"
-      end
-    end
-
-    context "when not signed in" do
-      it "returns a 401 status" do
-        get "/api/movies/#{movie.id}", {}, accept_json
-        expect(response.status).to be 401
-      end
+      body = JSON.parse(response.body)
+      expect(body["title"]).to eq "2001: A Space Odyssy"
     end
   end
 
@@ -63,22 +42,13 @@ describe "movies API" do
     let(:movie) { FactoryGirl.create(:movie, title: "Star Battles") }
     let(:movie_params) { { "movie" => { "title" => "Star Wars" } } }
 
-    context "when signed in" do
-      it "updates a movie" do
-        put "/api/movies/#{movie.id}",
-          movie_params.to_json,
-          accept_and_return_json.merge(signed_in_header)
+    it "updates a movie" do
+      put "/api/movies/#{movie.id}",
+      movie_params.to_json,
+        accept_and_return_json
 
-        expect(response.status).to be 204
-        expect(movie.reload.title).to eq "Star Wars"
-      end
-    end
-
-    context "when not signed in" do
-      it "returns a 401 status" do
-        put "/api/movies/#{movie.id}", movie_params.to_json, accept_and_return_json
-        expect(response.status).to eq 401
-      end
+      expect(response.status).to be 204
+      expect(movie.reload.title).to eq "Star Wars"
     end
   end
 
@@ -87,41 +57,23 @@ describe "movies API" do
        { "movie" => { "title" => "Indiana Jones and the Temple of Doom" } }
     }
 
-    context "when signed in" do
       it "creates a movie" do
         post "/api/movies", movie_params.to_json,
-          accept_and_return_json.merge(signed_in_header)
+          accept_and_return_json
 
         expect(response.status).to eq 201
         expect(Api::Movie.first.title).to eq "Indiana Jones and the Temple of Doom"
       end
-    end
-
-    context "when not signed in" do
-      it "returns a 401 status" do
-        post "/api/movies", movie_params.to_json, accept_and_return_json
-        expect(response.status).to eq 401
-      end
-    end
   end
 
   describe "DELETE /api/movies/:id" do
     let(:movie) { FactoryGirl.create :movie, title: "The Shining" }
 
-    context "when signed in" do
-      it "deletes a movie" do
-        delete "/api/movies/#{movie.id}", {}, accept_json.merge(signed_in_header)
+    it "deletes a movie" do
+      delete "/api/movies/#{movie.id}", {}, accept_json
 
-        expect(response.status).to be 204
-        expect(Api::Movie.count).to eq 0
-      end
-    end
-
-    context "when not signed in" do
-      it "returns a 401 status" do
-        delete "/api/movies/#{movie.id}", {}, accept_json
-        expect(response.status).to be 401
-      end
+      expect(response.status).to be 204
+      expect(Api::Movie.count).to eq 0
     end
   end
 end
