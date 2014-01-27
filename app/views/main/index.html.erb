@@ -1,1 +1,6 @@
-<h1>Hello</h1>
+<div ng-controller="MovieCtrl">
+  <h1>Movie Listings</h1>
+  <ul ng-repeat="movie in movies">
+    <li>{{ movie.title }}</li>
+  </ul>
+</div>
