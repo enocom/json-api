@@ -19,6 +19,6 @@ app.factory("Movie", function(railsResourceFactory) {
 
 app.controller("MovieListCtrl", function($scope, Movie) {
   Movie.query().then(function(movies) {
-    $scope.movies = movies;
+    $scope.moviesList = movies;
   });
 });

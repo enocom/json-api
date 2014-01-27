@@ -20,8 +20,8 @@ describe("listing movies", function() {
     $httpBackend.expectGET("/api/movies");
     var controller = createController();
     $httpBackend.flush();
-    var firstMovieTitle = $rootScope.movies[0].title;
-    var secondMovieTitle = $rootScope.movies[1].title;
+    var firstMovieTitle = $rootScope.moviesList[0].title;
+    var secondMovieTitle = $rootScope.moviesList[1].title;
 
     expect(firstMovieTitle).toEqual("A New Hope");
     expect(secondMovieTitle).toEqual("The Empire Strikes Back");
