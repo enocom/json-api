@@ -12,7 +12,7 @@ describe("listing movies", function() {
     var $controller = $injector.get("$controller");
 
     createController = function() {
-      return $controller("MoviesCtrl", { "$scope": $rootScope });
+      return $controller("MovieListCtrl", { "$scope": $rootScope });
     };
   }));
 
