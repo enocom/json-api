@@ -8,8 +8,10 @@ describe "movies API" do
 
   describe "GET /api/movies" do
     before do
-      FactoryGirl.create :movie, title: "The Hobbit"
-      FactoryGirl.create :movie, title: "The Fellowship of the Ring"
+      FactoryGirl.create :movie, title: "The Hobbit",
+        director: "Peter Jackson"
+      FactoryGirl.create :movie, title: "The Fellowship of the Ring",
+        director: "Peter Jackson"
     end
 
     it "returns all the movies" do
@@ -19,14 +21,18 @@ describe "movies API" do
 
       body = JSON.parse(response.body)
       movie_titles = body.map { |m| m["title"] }
+      movie_directors = body.map { |m| m["director"] }
 
       expect(movie_titles).to match_array(["The Hobbit",
                                            "The Fellowship of the Ring"])
+      expect(movie_directors).to match_array(["Peter Jackson",
+                                              "Peter Jackson"])
     end
   end
 
   describe "GET /api/movies/:id" do
-    let(:movie) { FactoryGirl.create(:movie, title: "2001: A Space Odyssy") }
+    let(:movie) { FactoryGirl.create(:movie, title: "2001: A Space Odyssy",
+                                     director: "Stanley Kubrick") }
 
     it "returns a requested movie" do
       get "/api/movies/#{movie.id}", {}, accept_json
@@ -35,6 +41,7 @@ describe "movies API" do
 
       body = JSON.parse(response.body)
       expect(body["title"]).to eq "2001: A Space Odyssy"
+      expect(body["director"]).to eq "Stanley Kubrick"
     end
   end
 
