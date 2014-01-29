@@ -10,5 +10,21 @@
 
 <%= yield %>
 
+<script type="text/ng-template" id="movie_list.html">
+  <div ng-controller="MovieListCtrl">
+    <h1>Movie Listings</h1>
+    <ul ng-repeat="movie in moviesList">
+      <li><a href="#/movies/{{ movie.id }}">{{ movie.title }}</a></li>
+    </ul>
+  </div>
+</script>
+
+<script type="text/ng-template" id="movie_detail.html">
+  <div ng-controller="MovieDetailCtrl">
+    <h1>{{ movie.title }}</h1>
+    <span>{{ movie.director }}</span>
+  </div>
+</script>
+
 </body>
 </html>

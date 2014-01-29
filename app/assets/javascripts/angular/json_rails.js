@@ -7,6 +7,7 @@ var app = angular.module("jsonRails", [
 //  var authToken = $("meta[name=\"csrf-token\"]").attr("content");
 //  $httpProvider.defaults.headers.common["X-CSRF-TOKEN"] = authToken;
 //});
+
 app.factory("Movie", function(railsResourceFactory) {
   return railsResourceFactory({ url: "/api/movies", name: "movie" });
 });
@@ -26,11 +27,11 @@ app.controller("MovieListCtrl", function($scope, Movie) {
 app.config(function($routeProvider) {
   $routeProvider
   .when("/movies", {
-    templateUrl: "/movie_list.html",
+    templateUrl: "movie_list.html",
     controller: "MovieListCtrl"
   })
   .when("/movies/:id", {
-    templateUrl: "/movie_detail.html",
+    templateUrl: "movie_detail.html",
     controller: "MovieDetailCtrl"
   });
 });
