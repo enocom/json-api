@@ -15,6 +15,7 @@ group :development, :test do
   gem "jasmine", git: "https://github.com/pivotal/jasmine-gem"
   gem "pry"
   gem "rspec-rails"
+  gem "spring"
 end
 
 group :test do
