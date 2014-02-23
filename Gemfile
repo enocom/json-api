@@ -6,13 +6,13 @@ gem "angularjs-rails"
 gem "devise"
 gem "jquery-rails"
 gem "pg"
-gem "rails", "4.0.2"
+gem "rails", "4.1.0.rc1"
 gem "thin"
 gem "sass-rails", "~> 4.0.0"
 gem "uglifier", ">= 1.3.0"
 
 group :development, :test do
-  gem "jasmine"
+  gem "jasmine", git: "https://github.com/pivotal/jasmine-gem"
   gem "pry"
   gem "rspec-rails"
 end
