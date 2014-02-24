@@ -10,6 +10,7 @@ gem "rails", "4.1.0.rc1"
 gem "thin"
 gem "sass-rails", "~> 4.0.0"
 gem "uglifier", ">= 1.3.0"
+gem "websocket-rails"
 
 group :development, :test do
   gem "jasmine", git: "https://github.com/pivotal/jasmine-gem"
