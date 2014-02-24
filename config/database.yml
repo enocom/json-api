@@ -3,21 +3,15 @@ development:
   encoding: unicode
   database: json-rails_development
   pool: 5
-  username: postgres
-  password:
 
 test:
   adapter: postgresql
   encoding: unicode
   database: json-rails_test
   pool: 5
-  username: postgres
-  password:
 
 production:
   adapter: postgresql
   encoding: unicode
   database: json-rails_production
   pool: 5
-  username: postgres
-  password:
