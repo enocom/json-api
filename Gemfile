@@ -14,7 +14,7 @@ gem "websocket-rails"
 
 group :development, :test do
   gem "jasmine", git: "https://github.com/pivotal/jasmine-gem"
-  gem "pry"
+  gem "pry-rails"
   gem "rspec-rails"
   gem "spring"
 end
