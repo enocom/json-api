@@ -1,4 +1,5 @@
-.bundle
-log/*.log
-tmp
-.vagrant
+/.bundle
+/log/*.log
+/tmp
+/.vagrant
+/public/assets
