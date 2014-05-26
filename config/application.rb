@@ -5,7 +5,7 @@ require "action_controller/railtie"
 require "action_mailer/railtie"
 require "sprockets/railtie"
 
-Bundler.require(:default, Rails.env)
+Bundler.setup(:default, Rails.env)
 
 module JsonRails
   class Application < Rails::Application

@@ -138,7 +138,6 @@ GEM
       sass (>= 3.1.10)
       sprockets-rails (~> 2.0.0)
     slop (3.5.0)
-    spring (1.1.2)
     sprockets (2.12.1)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -188,6 +187,5 @@ DEPENDENCIES
   rails
   rspec-rails
   sass-rails
-  spring
   thin
   uglifier
