@@ -2,10 +2,15 @@ require "spec_helper"
 
 feature "movie listings", :js do
   before do
-    FactoryGirl.create :movie, title: "Lost in Translation",
+    movie_repository = Rails.application.config.movie_repository
+    movie_repository.create(
+      title: "Lost in Translation",
       director: "Sophia Coppola"
-    FactoryGirl.create :movie, title: "Akira",
+    )
+    movie_repository.create(
+      title: "Akira",
       director: "Katsuhira Otomo"
+    )
   end
 
   scenario "viewing movies" do
