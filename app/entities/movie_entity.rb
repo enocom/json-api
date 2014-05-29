@@ -2,7 +2,7 @@ class MovieEntity
 
   include ActiveModel::Serializers::JSON
 
-  attr_accessor :id, :title, :director
+  attr_reader :id, :title, :director
 
   def initialize(attributes)
     @id       = attributes[:id]
@@ -11,7 +11,7 @@ class MovieEntity
   end
 
   def attributes
-    instance_values
+    instance_values.symbolize_keys
   end
 
   def attributes=(hash)

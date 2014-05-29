@@ -26,12 +26,16 @@ class FakeMovieRepository
   end
 
   def update(id, attributes)
-    movie = @storage.find { |movie| movie.id == id.to_i }
+    old_movie_index = @storage.index { |movie| movie.id == id.to_i }
+    old_movie_attributes = @storage[old_movie_index].attributes
 
-    movie.title = attributes["title"]
-    movie.director = attributes["director"]
+    new_movie = MovieEntity.new(
+      old_movie_attributes.merge(attributes).symbolize_keys
+    )
 
-    movie
+    @storage[old_movie_index] = new_movie
+
+    new_movie
   end
 
   def destroy(id)

@@ -26,7 +26,7 @@ shared_examples "a movie repository" do
       :director => "Alfred Hitchcock"
     )
 
-    repository.update(created_movie.id, "title" => "North by Northwest")
+    repository.update(created_movie.id, :title => "North by Northwest")
     updated_movie = repository.find_by_id(created_movie.id)
 
     expect(updated_movie.title).to eq "North by Northwest"
