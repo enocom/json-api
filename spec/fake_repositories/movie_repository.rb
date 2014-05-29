@@ -26,7 +26,7 @@ class FakeMovieRepository
   end
 
   def update(id, attributes)
-    old_movie_index = @storage.index { |movie| movie.id == id.to_i }
+    old_movie_index      = @storage.index { |movie| movie.id == id.to_i }
     old_movie_attributes = @storage[old_movie_index].attributes
 
     new_movie = MovieEntity.new(
