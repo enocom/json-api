@@ -1,4 +1,4 @@
-require "spec_helper"
+require "rails_helper"
 
 shared_examples "a movie repository" do
 

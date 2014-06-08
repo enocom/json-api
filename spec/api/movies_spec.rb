@@ -1,6 +1,6 @@
-require "spec_helper"
+require "rails_helper"
 
-describe "movies API" do
+describe "movies API", :type => :request do
   let(:accept_json) { { "Accept" => "application/json" } }
   let(:json_content_type) { { "Content-Type" => "application/json" } }
   let(:accept_and_return_json) { accept_json.merge(json_content_type) }
