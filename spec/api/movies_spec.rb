@@ -96,6 +96,7 @@ describe "movies API", :type => :request do
 
       expect(response.status).to eq 201
       first_movie = movie_repository.all.first
+      expect(response.location).to eq api_movie_path(first_movie.id)
 
       expect(first_movie.title)
         .to eq "Indiana Jones and the Temple of Doom"

@@ -17,8 +17,8 @@ module Api
     end
 
     def create
-      # TODO: Respond with the location of the resource
-      respond_with movie_repository.create(movie_params), location: nil
+      created_movie = movie_repository.create(movie_params)
+      respond_with created_movie, location: api_movie_path(created_movie.id)
     end
 
     def destroy
