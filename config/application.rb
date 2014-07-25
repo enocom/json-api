@@ -13,8 +13,11 @@ require "angularjs-rails-resource"
 require "angularjs-rails"
 require "sass-rails"
 
+require "pry"
+
 module JsonRails
   class Application < Rails::Application
     config.i18n.enforce_available_locales = true
+    config.console = Pry
   end
 end

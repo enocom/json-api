@@ -14,7 +14,7 @@ gem "uglifier"
 
 group :development, :test do
   gem "jasmine", git: "https://github.com/pivotal/jasmine-gem"
-  gem "pry-rails"
+  gem "pry"
   gem "rspec-rails"
 end
 
