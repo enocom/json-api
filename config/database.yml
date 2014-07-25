@@ -9,9 +9,3 @@ test:
   encoding: unicode
   database: json-rails_test
   pool: 5
-
-production:
-  adapter: postgresql
-  encoding: unicode
-  database: json-rails_production
-  pool: 5
