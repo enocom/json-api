@@ -37,10 +37,10 @@ end
 describe MovieRepository do
   let(:repository) { MovieRepository.new }
 
-  it "creates movies as Api::Movie objects" do
+  it "creates movies as Movie objects" do
     expect {
       repository.create(:title => "Rashomon", :director => "Kurozawa Akira")
-    }.to change(Api::Movie, :count).by(1)
+    }.to change(Movie, :count).by(1)
   end
 
   it "destroys a movie by id" do
