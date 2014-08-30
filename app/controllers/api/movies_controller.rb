@@ -15,6 +15,9 @@ module Api
 
     def update
       respond_with MovieService.new.update(params[:id], movie_params)
+    rescue MovieService::MovieLookupError => e
+      error_response = { "error" => e.to_s }.to_json
+      render json: error_response, status: 400
     end
 
     def create

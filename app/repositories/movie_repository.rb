@@ -28,6 +28,8 @@ class MovieRepository
       :title    => updated_movie.title,
       :director => updated_movie.director
     )
+  rescue ActiveRecord::RecordNotFound
+    raise MovieRepository::RecordNotFoundError, "The record with id #{id} could not be found"
   end
 
   def find_by_id(id)

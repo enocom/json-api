@@ -86,6 +86,18 @@ describe "movies API", :type => :request do
       expect(updated_movie.title).to eq "Star Wars"
       expect(updated_movie.director).to eq "George Lucas"
     end
+
+    it "returns an error when the movie cannot be found" do
+      bad_movie_id = 123
+      put "/api/movies/#{bad_movie_id}",
+        movie_params.to_json,
+        accept_and_return_json
+
+      expect(response.status).to eq 400
+
+      body = JSON.parse(response.body)
+      expect(body["error"]).to eq "The record with id #{bad_movie_id} could not be found"
+    end
   end
 
   describe "POST /api/movies" do

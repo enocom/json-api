@@ -24,16 +24,15 @@ describe MovieRepository do
     }.to raise_error(MovieRepository::MissingArgumentError)
   end
 
-  it "destroys a movie by id" do
-    created_movie = repository.create(
-      :title => "Rear Window",
-      :director => "Alfred Hitchcock"
-    )
-
-    repository.destroy(created_movie.id)
-
+  it "raises when trying to lookup an non-existant record" do
     expect {
-      repository.find_by_id(created_movie.id)
+      repository.find_by_id(bad_movie_id = 123)
+    }.to raise_error(MovieRepository::RecordNotFoundError)
+  end
+
+  it "raises when tring to update a non-existant record" do
+    expect {
+      repository.update(bad_movie_id = 123, { title: "The Shining"})
     }.to raise_error(MovieRepository::RecordNotFoundError)
   end
 

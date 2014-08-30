@@ -27,6 +27,8 @@ class MovieService
 
   def update(movie_id, params)
     movie_repository.update(movie_id, params)
+  rescue MovieRepository::RecordNotFoundError => e
+    raise MovieLookupError, e
   end
 
   private

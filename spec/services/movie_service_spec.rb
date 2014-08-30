@@ -12,6 +12,14 @@ describe MovieService do
     expect(fake_repo).to have_received(:update).with(123, { title: "Rear Window" })
   end
 
+  it "raises an error when trying to update a non-existant record" do
+    allow(fake_repo).to receive(:update).and_raise(MovieRepository::RecordNotFoundError)
+
+    expect {
+      MovieService.new(fake_repo).update(123, { title: "Rear Window" })
+    }.to raise_error(MovieService::MovieLookupError)
+  end
+
   it "tells the repository to find a single movie" do
     allow(fake_repo).to receive(:find_by_id)
 
