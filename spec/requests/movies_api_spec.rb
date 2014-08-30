@@ -151,7 +151,6 @@ describe "movies API", :type => :request do
       delete "/api/movies/#{movie.id}", {}, accept_json
 
       expect(response.status).to be 204
-      expect(movie_repository.all.count).to eq 0
     end
   end
 end

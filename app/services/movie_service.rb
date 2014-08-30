@@ -31,6 +31,10 @@ class MovieService
     raise MovieLookupError, e
   end
 
+  def destroy(movie_id)
+    movie_repository.destroy(movie_id)
+  end
+
   private
 
   attr_reader :movie_repository

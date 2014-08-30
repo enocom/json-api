@@ -29,17 +29,14 @@ module Api
     end
 
     def destroy
-      respond_with movie_repository.destroy(params[:id])
+      MovieService.new.destroy(params[:id])
+      head :no_content
     end
 
     private
 
     def movie_params
       params.require(:movie).permit(:title, :director)
-    end
-
-    def movie_repository
-      MovieRepository.new
     end
   end
 end

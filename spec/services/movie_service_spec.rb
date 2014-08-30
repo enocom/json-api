@@ -29,13 +29,22 @@ describe MovieService do
     expect(fake_repo).to have_received(:all)
   end
 
-  it "delegates creation responsibility to a repository" do
+  it "delegates creation responsibility to the repository" do
     allow(fake_repo).to receive(:create)
 
     MovieService.new(fake_repo).create(title: "Akira", director: "Katsuhiro Otomo")
 
     expect(fake_repo).to have_received(:create).with(title: "Akira",
                                                      director: "Katsuhiro Otomo")
+  end
+
+  it "delegates deletion responsibility to the responsitory" do
+    allow(fake_repo).to receive(:destroy)
+
+    movie_to_delete_id = 123
+    MovieService.new(fake_repo).destroy(movie_to_delete_id)
+
+    expect(fake_repo).to have_received(:destroy).with(movie_to_delete_id)
   end
 
   describe "error handling" do
