@@ -6,10 +6,7 @@ class MovieRepository
   class RecordNotFoundError < StandardError; end
 
   def create(attributes)
-    if attributes[:title].nil? || attributes[:title].empty? ||
-      attributes[:director].nil? || attributes[:director].empty?
-      raise MissingArgumentError, "Missing title or director param"
-    end
+    validate_attributes(attributes)
 
     created_movie = Movie.create(attributes)
 
@@ -54,6 +51,13 @@ class MovieRepository
       :title    => movie.title,
       :director => movie.director
     )
+  end
+
+  def validate_attributes(attributes)
+    if attributes[:title].nil? || attributes[:title].empty? ||
+      attributes[:director].nil? || attributes[:director].empty?
+      raise MissingArgumentError, "Missing title or director param"
+    end
   end
 
 end
