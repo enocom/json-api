@@ -1,0 +1,5 @@
+deployment:
+  acceptance:
+    branch: master
+    heroku:
+      appname: json-rails-acceptance
