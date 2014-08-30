@@ -99,6 +99,19 @@ describe "movies API", :type => :request do
       expect(first_movie.title)
         .to eq "Indiana Jones and the Temple of Doom"
     end
+
+    it "returns an error when passed incomplete arguments" do
+      incomplete_movie_params = {
+        "movie" => {
+          "title" => "Indiana Jones and the Temple of Doom"
+        }
+      }
+
+      post "/api/movies", incomplete_movie_params.to_json,
+        accept_and_return_json
+
+      expect(response.status).to eq 400
+    end
   end
 
   describe "DELETE /api/movies/:id" do

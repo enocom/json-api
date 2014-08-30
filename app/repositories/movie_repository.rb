@@ -4,7 +4,7 @@ class MovieRepository
   def create(attributes)
     if attributes[:title].nil? || attributes[:title].empty? ||
       attributes[:director].nil? || attributes[:director].empty?
-      raise MissingArgumentError
+      raise MissingArgumentError, "Missing title or director param"
     end
 
     created_movie = Movie.create(attributes)
