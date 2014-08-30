@@ -13,21 +13,13 @@ class MovieRepository
 
     created_movie = Movie.create(attributes)
 
-    MovieEntity.new(
-      :id       => created_movie.id,
-      :title    => created_movie.title,
-      :director => created_movie.director
-    )
+    create_entity(created_movie)
   end
 
   def update(id, attributes)
     updated_movie = Movie.update(id, attributes)
 
-    MovieEntity.new(
-      :id       => updated_movie.id,
-      :title    => updated_movie.title,
-      :director => updated_movie.director
-    )
+    create_entity(updated_movie)
   rescue ActiveRecord::RecordNotFound
     raise MovieRepository::RecordNotFoundError, "The record with id #{id} could not be found"
   end
@@ -35,11 +27,7 @@ class MovieRepository
   def find_by_id(id)
     found_movie = Movie.find(id)
 
-    MovieEntity.new(
-      :id       => found_movie.id,
-      :title    => found_movie.title,
-      :director => found_movie.director
-    )
+    create_entity(found_movie)
   rescue ActiveRecord::RecordNotFound
     raise RecordNotFoundError, "The record with id #{id} could not be found"
   end
@@ -47,23 +35,25 @@ class MovieRepository
   def destroy(movie_id)
     destroyed_movie = Movie.destroy(movie_id)
 
-    MovieEntity.new(
-      :id       => destroyed_movie.id,
-      :title    => destroyed_movie.title,
-      :director => destroyed_movie.director
-    )
+    create_entity(destroyed_movie)
   rescue ActiveRecord::RecordNotFound
     raise RecordNotFoundError, "The record with id #{movie_id} could not be found"
   end
 
   def all
     Movie.all.map do |m|
-      MovieEntity.new(
-        :id       => m.id,
-        :title    => m.title,
-        :director => m.director
-      )
+      create_entity(m)
     end
+  end
+
+  private
+
+  def create_entity(movie)
+    MovieEntity.new(
+      :id       => movie.id,
+      :title    => movie.title,
+      :director => movie.director
+    )
   end
 
 end
