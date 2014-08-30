@@ -1,3 +1,6 @@
+require_relative "../models/movie"
+require_relative "../entities/movie_entity"
+
 class MovieRepository
   class MissingArgumentError < StandardError; end
 

@@ -15,9 +15,9 @@ module Api
     end
 
     def create
-      created_movie = movie_repository.create(movie_params)
+      created_movie = MovieService.new.create(movie_params)
       respond_with created_movie, location: api_movie_path(created_movie.id)
-    rescue MovieRepository::MissingArgumentError => e
+    rescue MovieService::MovieCreationError => e
       error_response = { "error" => e.to_s }.to_json
       render json: error_response, status: 400
     end

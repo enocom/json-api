@@ -113,7 +113,7 @@ describe "movies API", :type => :request do
       expect(response.status).to eq 400
 
       body = JSON.parse(response.body)
-      expect(body["error"]).to eq "Missing title or director param"
+      expect(body["error"]).to eq "Movie creation failed: Missing title or director param"
     end
   end
 
