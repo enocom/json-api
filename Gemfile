@@ -15,3 +15,7 @@ group :test do
   gem "database_cleaner"
   gem "poltergeist"
 end
+
+group :production do
+  gem "rails_12factor" # for Heroku logging
+end
