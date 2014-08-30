@@ -1,9 +1,8 @@
 source "https://rubygems.org"
 ruby "2.1.2"
 
-gem "active_model_serializers"
 gem "pg"
-gem "rails"
+gem "rails", "4.1.5"
 gem "thin"
 
 group :development, :test do
