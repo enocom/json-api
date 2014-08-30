@@ -42,6 +42,17 @@ describe MovieRepository do
     expect(updated_movie.title).to eq "North by Northwest"
   end
 
+  it "deletes movies" do
+    created_movie = Movie.create(
+      :title => "Rear Window",
+      :director => "Alfred Hitchcock"
+    )
+
+    repository.destroy(created_movie.id)
+
+    expect(Movie.count).to be_zero
+  end
+
   describe "error handling" do
     it "raises when passed incomplete arguments during creation" do
       expect {
