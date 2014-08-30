@@ -67,9 +67,15 @@ describe MovieRepository do
       }.to raise_error(MovieRepository::RecordNotFoundError)
     end
 
-    it "raise an error when it cannot find a movie by id" do
+    it "raise an error when finding a movie fails" do
       expect {
         repository.find_by_id(bad_movie_id = 123)
+      }.to raise_error(MovieRepository::RecordNotFoundError)
+    end
+
+    it "raise an error when deleting a movie fails" do
+      expect {
+        repository.destroy(bad_movie_id = 123)
       }.to raise_error(MovieRepository::RecordNotFoundError)
     end
 

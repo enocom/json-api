@@ -33,6 +33,8 @@ class MovieService
 
   def destroy(movie_id)
     movie_repository.destroy(movie_id)
+  rescue MovieRepository::RecordNotFoundError => e
+    raise MovieLookupError, e
   end
 
   private

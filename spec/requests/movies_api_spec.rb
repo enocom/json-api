@@ -152,5 +152,15 @@ describe "movies API", :type => :request do
 
       expect(response.status).to be 204
     end
+
+    it "raises an error when deleting a non-existant movie" do
+      bad_movie_id = 123
+      delete "/api/movies/#{bad_movie_id}", {}, accept_json
+
+      expect(response.status).to be 400
+
+      body = JSON.parse(response.body)
+      expect(body["error"]).to eq "The record with id #{bad_movie_id} could not be found"
+    end
   end
 end

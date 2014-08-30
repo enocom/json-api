@@ -57,12 +57,21 @@ describe MovieService do
     end
 
 
-    it "raises an error when a movie is not found" do
+    it "raises an error when looking up a movie fails" do
       allow(fake_repo).to receive(:find_by_id).and_raise(MovieRepository::RecordNotFoundError)
 
       bad_movie_id = 1
       expect {
         MovieService.new(fake_repo).find(bad_movie_id)
+      }.to raise_error(MovieService::MovieLookupError)
+    end
+
+    it "raises an error when deleting a movie fails" do
+      allow(fake_repo).to receive(:destroy).and_raise(MovieRepository::RecordNotFoundError)
+
+      bad_movie_id = 1
+      expect {
+        MovieService.new(fake_repo).destroy(bad_movie_id)
       }.to raise_error(MovieService::MovieLookupError)
     end
 

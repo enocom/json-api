@@ -52,6 +52,8 @@ class MovieRepository
       :title    => destroyed_movie.title,
       :director => destroyed_movie.director
     )
+  rescue ActiveRecord::RecordNotFound
+    raise RecordNotFoundError, "The record with id #{movie_id} could not be found"
   end
 
   def all

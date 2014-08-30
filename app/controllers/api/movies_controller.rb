@@ -31,6 +31,9 @@ module Api
     def destroy
       MovieService.new.destroy(params[:id])
       head :no_content
+    rescue MovieService::MovieLookupError => e
+      error_response = { "error" => e.to_s }.to_json
+      render json: error_response, status: 400
     end
 
     private
