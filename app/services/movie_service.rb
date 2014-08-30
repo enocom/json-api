@@ -8,6 +8,10 @@ class MovieService
     @movie_repository = repo
   end
 
+  def all
+    movie_repository.all
+  end
+
   def create(params)
     movie_repository.create(params)
   rescue MovieRepository::MissingArgumentError => e

@@ -3,7 +3,7 @@ module Api
     respond_to :json
 
     def index
-      respond_with movie_repository.all
+      respond_with MovieService.new.all
     end
 
     def show
