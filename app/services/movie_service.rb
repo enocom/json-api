@@ -12,6 +12,10 @@ class MovieService
     movie_repository.all
   end
 
+  def find(movie_id)
+    movie_repository.find_by_id(movie_id)
+  end
+
   def create(params)
     movie_repository.create(params)
   rescue MovieRepository::MissingArgumentError => e

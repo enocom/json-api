@@ -4,6 +4,15 @@ require_relative "../../app/repositories/movie_repository"
 describe MovieService do
   let(:fake_repo) { instance_double(MovieRepository) }
 
+  it "tells the repository to find a single movie" do
+    allow(fake_repo).to receive(:find_by_id)
+
+    movie_id = 1
+    MovieService.new(fake_repo).find(movie_id)
+
+    expect(fake_repo).to have_received(:find_by_id).with(movie_id)
+  end
+
   it "returns all movies from the repository" do
     allow(fake_repo).to receive(:all)
 

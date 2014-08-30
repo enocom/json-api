@@ -7,7 +7,7 @@ module Api
     end
 
     def show
-      respond_with movie_repository.find_by_id(params[:id])
+      respond_with MovieService.new.find(params[:id])
     end
 
     def update
