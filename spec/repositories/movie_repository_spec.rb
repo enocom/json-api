@@ -14,6 +14,16 @@ describe MovieRepository do
     expect(movie).to be_kind_of(MovieEntity)
   end
 
+  it "raises when passed incomplete arguments during creation" do
+    expect {
+      repository.create(:title => "Rashomon")
+    }.to raise_error(MovieRepository::MissingArgumentError)
+
+    expect {
+      repository.create(:director => "Kurozawa Akira")
+    }.to raise_error(MovieRepository::MissingArgumentError)
+  end
+
   it "destroys a movie by id" do
     created_movie = repository.create(
       :title => "Rear Window",

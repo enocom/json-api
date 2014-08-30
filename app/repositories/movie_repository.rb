@@ -1,6 +1,11 @@
 class MovieRepository
+  class MissingArgumentError < StandardError; end
 
   def create(attributes)
+    if attributes[:title].nil? || attributes[:director].nil?
+      raise MissingArgumentError
+    end
+
     created_movie = Movie.create(attributes)
 
     MovieEntity.new(
