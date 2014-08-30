@@ -15,31 +15,29 @@ describe MovieRepository do
   end
 
   it "returns all the movies" do
-    repository.create(:title => "Rear Window", :director => "Alfred Hitchcock")
-    repository.create(:title => "Psycho", :director => "Alfred Hitchcock")
+    Movie.create(:title => "Rear Window", :director => "Alfred Hitchcock")
+    Movie.create(:title => "Psycho", :director => "Alfred Hitchcock")
     all_movies = repository.all
 
     expect(all_movies.map(&:title)).to match_array(["Rear Window", "Psycho"])
   end
 
   it "finds a movie by id" do
-    created_movie = repository.create(
+    created_movie = Movie.create(
       :title => "Rear Window",
       :director => "Alfred Hitchcock"
     )
 
-    expect(repository.find_by_id(created_movie.id).title)
-    .to eq "Rear Window"
+    expect(repository.find_by_id(created_movie.id).title).to eq "Rear Window"
   end
 
   it "updates a movie by id" do
-    created_movie = repository.create(
+    created_movie = Movie.create(
       :title => "Rear Window",
       :director => "Alfred Hitchcock"
     )
 
-    repository.update(created_movie.id, :title => "North by Northwest")
-    updated_movie = repository.find_by_id(created_movie.id)
+    updated_movie = repository.update(created_movie.id, :title => "North by Northwest")
 
     expect(updated_movie.title).to eq "North by Northwest"
   end
