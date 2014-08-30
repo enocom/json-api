@@ -103,7 +103,7 @@ describe "movies API", :type => :request do
     it "returns an error when passed incomplete arguments" do
       incomplete_movie_params = {
         "movie" => {
-          "title" => "Indiana Jones and the Temple of Doom"
+          "title" => "Dune"
         }
       }
 
@@ -111,6 +111,9 @@ describe "movies API", :type => :request do
         accept_and_return_json
 
       expect(response.status).to eq 400
+
+      body = JSON.parse(response.body)
+      expect(body["error"]).to eq "Missing title or director param"
     end
   end
 
