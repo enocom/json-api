@@ -4,6 +4,14 @@ require_relative "../../app/repositories/movie_repository"
 describe MovieService do
   let(:fake_repo) { instance_double(MovieRepository) }
 
+  it "tells the repository to update a record" do
+    allow(fake_repo).to receive(:update)
+
+    MovieService.new(fake_repo).update(123, { title: "Rear Window" })
+
+    expect(fake_repo).to have_received(:update).with(123, { title: "Rear Window" })
+  end
+
   it "tells the repository to find a single movie" do
     allow(fake_repo).to receive(:find_by_id)
 

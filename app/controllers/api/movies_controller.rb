@@ -14,7 +14,7 @@ module Api
     end
 
     def update
-      respond_with movie_repository.update(params[:id], movie_params)
+      respond_with MovieService.new.update(params[:id], movie_params)
     end
 
     def create

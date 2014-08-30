@@ -25,6 +25,10 @@ class MovieService
     raise MovieCreationError, "Movie creation failed: Missing title or director param"
   end
 
+  def update(movie_id, params)
+    movie_repository.update(movie_id, params)
+  end
+
   private
 
   attr_reader :movie_repository
