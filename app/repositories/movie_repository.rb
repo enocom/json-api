@@ -3,6 +3,7 @@ require_relative "../entities/movie_entity"
 
 class MovieRepository
   class MissingArgumentError < StandardError; end
+  class RecordNotFoundError < StandardError; end
 
   def create(attributes)
     if attributes[:title].nil? || attributes[:title].empty? ||
@@ -37,6 +38,8 @@ class MovieRepository
       :title    => found_movie.title,
       :director => found_movie.director
     )
+  rescue ActiveRecord::RecordNotFound
+    raise RecordNotFoundError, "The record with id #{id} could not be found"
   end
 
   def destroy(movie_id)

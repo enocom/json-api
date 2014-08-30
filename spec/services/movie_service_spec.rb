@@ -13,6 +13,15 @@ describe MovieService do
     expect(fake_repo).to have_received(:find_by_id).with(movie_id)
   end
 
+  it "raises an error when a movie is not found" do
+    allow(fake_repo).to receive(:find_by_id).and_raise(MovieRepository::RecordNotFoundError)
+
+    bad_movie_id = 1
+    expect {
+      MovieService.new(fake_repo).find(bad_movie_id)
+    }.to raise_error(MovieService::MovieLookupError)
+  end
+
   it "returns all movies from the repository" do
     allow(fake_repo).to receive(:all)
 

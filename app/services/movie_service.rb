@@ -3,6 +3,7 @@ require_relative "../repositories/movie_repository"
 class MovieService
 
   class MovieCreationError < StandardError; end
+  class MovieLookupError < StandardError; end
 
   def initialize(repo = MovieRepository.new)
     @movie_repository = repo
@@ -14,6 +15,8 @@ class MovieService
 
   def find(movie_id)
     movie_repository.find_by_id(movie_id)
+  rescue MovieRepository::RecordNotFoundError => e
+    raise MovieLookupError, e
   end
 
   def create(params)

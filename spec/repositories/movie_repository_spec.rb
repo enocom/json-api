@@ -34,7 +34,7 @@ describe MovieRepository do
 
     expect {
       repository.find_by_id(created_movie.id)
-    }.to raise_error(ActiveRecord::RecordNotFound)
+    }.to raise_error(MovieRepository::RecordNotFoundError)
   end
 
   it "returns all the movies" do
@@ -53,6 +53,12 @@ describe MovieRepository do
 
     expect(repository.find_by_id(created_movie.id).title)
       .to eq "Rear Window"
+  end
+
+  it "raise an error when it cannot find a movie by id" do
+    expect {
+      repository.find_by_id(bad_movie_id = 123)
+    }.to raise_error(MovieRepository::RecordNotFoundError)
   end
 
   it "updates a movie by id" do
