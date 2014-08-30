@@ -1,6 +1,7 @@
 # Json-Rails
 
 [![Circle CI](https://circleci.com/gh/enocom/json-rails/tree/master.png?style=badge)](https://circleci.com/gh/enocom/json-rails/tree/master)
+[![Code Climate](https://codeclimate.com/github/enocom/json-rails/badges/gpa.svg)](https://codeclimate.com/github/enocom/json-rails)
 
 A simple set of JSON RESTful endpoints for cURL practice.
 
