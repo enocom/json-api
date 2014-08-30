@@ -9,6 +9,11 @@ describe MovieRepository do
     }.to change(Movie, :count).by(1)
   end
 
+  it "returns movie entities" do
+    movie = repository.create(:title => "Rashomon", :director => "Kurozawa Akira")
+    expect(movie).to be_kind_of(MovieEntity)
+  end
+
   it "destroys a movie by id" do
     created_movie = repository.create(
       :title => "Rear Window",
