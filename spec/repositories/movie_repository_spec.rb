@@ -64,7 +64,7 @@ describe MovieRepository do
       }.to raise_error(MovieRepository::MissingArgumentError)
     end
 
-    it "raises when trying to lookup an non-existant record" do
+    it "raises when trying to lookup a non-existant record" do
       expect {
         repository.find_by_id(bad_movie_id = 123)
       }.to raise_error(MovieRepository::RecordNotFoundError)
