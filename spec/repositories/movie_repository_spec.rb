@@ -3,18 +3,18 @@ require "rails_helper"
 describe MovieRepository do
   let(:repository) { MovieRepository.new }
 
-  it "creates movies as Movie objects" do
+  it "creates movies in the database" do
     expect {
       repository.create(:title => "Rashomon", :director => "Kurozawa Akira")
     }.to change(Movie, :count).by(1)
   end
 
-  it "returns movie entities" do
+  it "returns movie entities (and not Active Record objects)" do
     movie = repository.create(:title => "Rashomon", :director => "Kurozawa Akira")
     expect(movie).to be_kind_of(MovieEntity)
   end
 
-  it "returns all the movies" do
+  it "returns all the persisted movies" do
     Movie.create(:title => "Rear Window", :director => "Alfred Hitchcock")
     Movie.create(:title => "Psycho", :director => "Alfred Hitchcock")
     all_movies = repository.all
@@ -42,7 +42,7 @@ describe MovieRepository do
     expect(updated_movie.title).to eq "North by Northwest"
   end
 
-  it "deletes movies" do
+  it "deletes movies from the database" do
     created_movie = Movie.create(
       :title => "Rear Window",
       :director => "Alfred Hitchcock"
