@@ -16,7 +16,7 @@ describe MovieRepository do
 
   it "raises when passed incomplete arguments during creation" do
     expect {
-      repository.create(:title => "Rashomon")
+      repository.create(:title => "Rashomon", :director => "")
     }.to raise_error(MovieRepository::MissingArgumentError)
 
     expect {

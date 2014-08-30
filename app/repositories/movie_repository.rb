@@ -2,7 +2,8 @@ class MovieRepository
   class MissingArgumentError < StandardError; end
 
   def create(attributes)
-    if attributes[:title].nil? || attributes[:director].nil?
+    if attributes[:title].nil? || attributes[:title].empty? ||
+      attributes[:director].nil? || attributes[:director].empty?
       raise MissingArgumentError
     end
 
