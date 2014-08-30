@@ -4,9 +4,7 @@ describe "movies API", :type => :request do
   let(:accept_json) { { "Accept" => "application/json" } }
   let(:json_content_type) { { "Content-Type" => "application/json" } }
   let(:accept_and_return_json) { accept_json.merge(json_content_type) }
-  let(:movie_repository) { Rails.application.config.movie_repository }
-
-  before(:each) { movie_repository.destroy_all }
+  let(:movie_repository) { MovieRepository.new }
 
   describe "GET /api/movies" do
     before do

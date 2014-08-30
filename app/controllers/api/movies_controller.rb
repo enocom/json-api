@@ -30,7 +30,7 @@ module Api
     end
 
     def movie_repository
-      Rails.application.config.movie_repository
+      MovieRepository.new
     end
   end
 end

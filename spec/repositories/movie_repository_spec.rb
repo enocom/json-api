@@ -1,6 +1,26 @@
 require "rails_helper"
 
-shared_examples "a movie repository" do
+describe MovieRepository do
+  let(:repository) { MovieRepository.new }
+
+  it "creates movies as Movie objects" do
+    expect {
+      repository.create(:title => "Rashomon", :director => "Kurozawa Akira")
+    }.to change(Movie, :count).by(1)
+  end
+
+  it "destroys a movie by id" do
+    created_movie = repository.create(
+      :title => "Rear Window",
+      :director => "Alfred Hitchcock"
+    )
+
+    repository.destroy(created_movie.id)
+
+    expect {
+      repository.find_by_id(created_movie.id)
+    }.to raise_error(ActiveRecord::RecordNotFound)
+  end
 
   it "returns all the movies" do
     repository.create(:title => "Rear Window", :director => "Alfred Hitchcock")
@@ -31,47 +51,4 @@ shared_examples "a movie repository" do
 
     expect(updated_movie.title).to eq "North by Northwest"
   end
-
-end
-
-describe MovieRepository do
-  let(:repository) { MovieRepository.new }
-
-  it "creates movies as Movie objects" do
-    expect {
-      repository.create(:title => "Rashomon", :director => "Kurozawa Akira")
-    }.to change(Movie, :count).by(1)
-  end
-
-  it "destroys a movie by id" do
-    created_movie = repository.create(
-      :title => "Rear Window",
-      :director => "Alfred Hitchcock"
-    )
-
-    repository.destroy(created_movie.id)
-
-    expect {
-      repository.find_by_id(created_movie.id)
-    }.to raise_error(ActiveRecord::RecordNotFound)
-  end
-
-  it_behaves_like "a movie repository"
-end
-
-describe FakeMovieRepository do
-  let(:repository) { FakeMovieRepository.new }
-
-  it "destroys a movie by id" do
-    created_movie = repository.create(
-      :title => "Rear Window",
-      :director => "Alfred Hitchcock"
-    )
-
-    repository.destroy(created_movie.id)
-
-    expect(repository.find_by_id(created_movie.id)).to be_nil
-  end
-
-  it_behaves_like "a movie repository"
 end
