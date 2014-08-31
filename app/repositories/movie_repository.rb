@@ -13,10 +13,13 @@ class MovieRepository
   end
 
   def update(id, attributes)
-    updated_movie = Movie.update(id, attributes)
-    create_entity(updated_movie)
+    movie = Movie.find(id)
+    movie.update!(attributes)
+    create_entity(movie)
   rescue ActiveRecord::RecordNotFound
     raise_record_not_found_error(id)
+  rescue ActiveRecord::RecordInvalid
+    raise MissingArgumentError, "Missing title or director param"
   end
 
   def find_by_id(id)

@@ -70,10 +70,19 @@ describe MovieRepository do
       }.to raise_error(MovieRepository::RecordNotFoundError)
     end
 
-    it "raises when tring to update a non-existant record" do
+    it "raises when trying to update a non-existant record" do
       expect {
         repository.update(bad_movie_id = 123, { title: "The Shining"})
       }.to raise_error(MovieRepository::RecordNotFoundError)
+    end
+
+    it "raises when trying to update a record to be invalid" do
+      existing_movie = Movie.create(title: "The Shawshank Redemption",
+                                    director: "Frank Durabont")
+
+      expect {
+        repository.update(existing_movie.id, { title: ""})
+      }.to raise_error(MovieRepository::MissingArgumentError)
     end
 
     it "raise an error when finding a movie fails" do
