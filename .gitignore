@@ -3,3 +3,4 @@
 /tmp
 /.vagrant
 /public/assets
+/.env
