@@ -5,9 +5,7 @@ describe MovieNotificationMailer do
     entity = MovieEntity.new(title:     "Akira",
                              director:  "Katsuhiro Otomo",
                              fan_email: "tetsuo.shima@neo-tokyo.net")
-    MovieNotificationMailer.send_email(entity)
-
-    mail = ActionMailer::Base.deliveries.first
+    mail = MovieNotificationMailer.new_listing(entity)
 
     expect(mail.to).to eq ["tetsuo.shima@neo-tokyo.net"]
     expect(mail.body.raw_source).to include "Akira, directed by Katsuhiro Otomo"

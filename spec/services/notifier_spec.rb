@@ -7,11 +7,9 @@ describe Notifier do
     entity = MovieEntity.new(title:     "Akira",
                              director:  "Katsuhiro Otomo",
                              fan_email: "tetsuo.shima@neo-tokyo.net")
-    mailer = class_double(MovieNotificationMailer)
-    allow(mailer).to receive(:send_email)
 
-    Notifier.new(mailer).send_notification(entity)
-
-    expect(mailer).to have_received(:send_email).with(entity)
+    expect {
+      Notifier.new.send_notification(entity)
+    }.to change(ActionMailer::Base.deliveries, :count).by(1)
   end
 end
