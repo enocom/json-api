@@ -1,6 +1,5 @@
-require_relative "../../app/services/notifier"
-require_relative "../../app/mailers/movie_notification_mailer"
-require_relative "../../app/entities/movie_entity"
+require "rails_helper"
+require "sidekiq/testing"
 
 describe Notifier do
   it "sends notifications using a passed-in mailer" do
