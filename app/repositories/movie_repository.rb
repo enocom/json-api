@@ -18,7 +18,7 @@ class MovieRepository
 
     create_entity(updated_movie)
   rescue ActiveRecord::RecordNotFound
-    raise MovieRepository::RecordNotFoundError, "The record with id #{id} could not be found"
+    raise_record_not_found_error(id)
   end
 
   def find_by_id(id)
@@ -26,15 +26,15 @@ class MovieRepository
 
     create_entity(found_movie)
   rescue ActiveRecord::RecordNotFound
-    raise RecordNotFoundError, "The record with id #{id} could not be found"
+    raise_record_not_found_error(id)
   end
 
-  def destroy(movie_id)
-    destroyed_movie = Movie.destroy(movie_id)
+  def destroy(id)
+    destroyed_movie = Movie.destroy(id)
 
     create_entity(destroyed_movie)
   rescue ActiveRecord::RecordNotFound
-    raise RecordNotFoundError, "The record with id #{movie_id} could not be found"
+    raise_record_not_found_error(id)
   end
 
   def all
@@ -58,6 +58,10 @@ class MovieRepository
       attributes[:director].nil? || attributes[:director].empty?
       raise MissingArgumentError, "Missing title or director param"
     end
+  end
+
+  def raise_record_not_found_error(id)
+    raise RecordNotFoundError, "The record with id #{id} could not be found"
   end
 
 end
