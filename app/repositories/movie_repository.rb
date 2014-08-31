@@ -6,16 +6,14 @@ class MovieRepository
   class RecordNotFoundError < StandardError; end
 
   def create(attributes)
-    validate_attributes(attributes)
-
-    created_movie = Movie.create(attributes)
-
+    created_movie = Movie.create!(attributes)
     create_entity(created_movie)
+  rescue ActiveRecord::RecordInvalid
+    raise MissingArgumentError, "Missing title or director param"
   end
 
   def update(id, attributes)
     updated_movie = Movie.update(id, attributes)
-
     create_entity(updated_movie)
   rescue ActiveRecord::RecordNotFound
     raise_record_not_found_error(id)
@@ -23,7 +21,6 @@ class MovieRepository
 
   def find_by_id(id)
     found_movie = Movie.find(id)
-
     create_entity(found_movie)
   rescue ActiveRecord::RecordNotFound
     raise_record_not_found_error(id)
@@ -31,7 +28,6 @@ class MovieRepository
 
   def destroy(id)
     destroyed_movie = Movie.destroy(id)
-
     create_entity(destroyed_movie)
   rescue ActiveRecord::RecordNotFound
     raise_record_not_found_error(id)
