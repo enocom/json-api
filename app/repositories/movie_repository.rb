@@ -9,7 +9,7 @@ class MovieRepository
     created_movie = Movie.create!(attributes)
     create_entity(created_movie)
   rescue ActiveRecord::RecordInvalid
-    raise MissingArgumentError, "Missing title or director param"
+    raise_record_invalid
   end
 
   def update(id, attributes)
@@ -19,7 +19,7 @@ class MovieRepository
   rescue ActiveRecord::RecordNotFound
     raise_record_not_found_error(id)
   rescue ActiveRecord::RecordInvalid
-    raise MissingArgumentError, "Missing title or director param"
+    raise_record_invalid
   end
 
   def find_by_id(id)
@@ -61,6 +61,10 @@ class MovieRepository
 
   def raise_record_not_found_error(id)
     raise RecordNotFoundError, "The record with id #{id} could not be found"
+  end
+
+  def raise_record_invalid
+    raise MissingArgumentError, "Missing title or director param"
   end
 
 end
