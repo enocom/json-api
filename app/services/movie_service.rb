@@ -16,29 +16,37 @@ class MovieService
   def find(movie_id)
     movie_repository.find_by_id(movie_id)
   rescue MovieRepository::RecordNotFoundError => e
-    raise MovieLookupError, e
+    raise_lookup_error(e)
   end
 
   def create(params)
     movie_repository.create(params)
   rescue MovieRepository::MissingArgumentError => e
-    raise MovieCreationError, "Movie creation failed: Missing title or director param"
+    raise_creation_error
   end
 
   def update(movie_id, params)
     movie_repository.update(movie_id, params)
   rescue MovieRepository::RecordNotFoundError => e
-    raise MovieLookupError, e
+    raise_lookup_error(e)
   end
 
   def destroy(movie_id)
     movie_repository.destroy(movie_id)
   rescue MovieRepository::RecordNotFoundError => e
-    raise MovieLookupError, e
+    raise_lookup_error(e)
   end
 
   private
 
   attr_reader :movie_repository
+
+  def raise_lookup_error(e)
+    raise MovieLookupError, e
+  end
+
+  def raise_creation_error
+    raise MovieCreationError, "Movie creation failed: Missing title or director param"
+  end
 
 end
