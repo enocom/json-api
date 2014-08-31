@@ -52,13 +52,6 @@ class MovieRepository
     )
   end
 
-  def validate_attributes(attributes)
-    if attributes[:title].nil? || attributes[:title].empty? ||
-      attributes[:director].nil? || attributes[:director].empty?
-      raise MissingArgumentError, "Missing title or director param"
-    end
-  end
-
   def raise_record_not_found_error(id)
     raise RecordNotFoundError, "The record with id #{id} could not be found"
   end
