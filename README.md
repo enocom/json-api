@@ -1,4 +1,4 @@
-# Json-Rails
+# Json-Api
 
 [![Circle CI](https://circleci.com/gh/enocom/json-rails/tree/master.png?style=badge)](https://circleci.com/gh/enocom/json-rails/tree/master)
 [![Code Climate](https://codeclimate.com/github/enocom/json-rails/badges/gpa.svg)](https://codeclimate.com/github/enocom/json-rails)
