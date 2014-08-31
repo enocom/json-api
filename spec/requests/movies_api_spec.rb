@@ -80,11 +80,12 @@ describe "movies API", :type => :request do
         movie_params.to_json,
         accept_and_return_json
 
-      expect(response.status).to be 204
+      expect(response.status).to be 200
 
-      updated_movie = movie_repository.find_by_id(movie.id)
-      expect(updated_movie.title).to eq "Star Wars"
-      expect(updated_movie.director).to eq "George Lucas"
+      body = JSON.parse(response.body)
+
+      expect(body["title"]).to eq "Star Wars"
+      expect(body["director"]).to eq "George Lucas"
     end
 
     it "returns an error when the movie cannot be found" do
