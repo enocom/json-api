@@ -48,8 +48,7 @@ class MovieRepository
     MovieEntity.new(
       :id        => movie.id,
       :title     => movie.title,
-      :director  => movie.director,
-      :fan_email => movie.fan_email
+      :director  => movie.director
     )
   end
 

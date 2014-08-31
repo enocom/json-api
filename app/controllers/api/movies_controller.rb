@@ -35,7 +35,7 @@ module Api
     private
 
     def movie_params
-      params.require(:movie).permit(:title, :director, :fan_email)
+      params.require(:movie).permit(:title, :director)
     end
 
     def render_error(e)

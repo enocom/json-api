@@ -9,10 +9,6 @@ Bundler.setup(:default, Rails.env)
 # Require pry here to set its as the default for console
 require "pry"
 
-# Pull in sidekiq for the ActionMailer::Base monkey patch
-# which puts a #delay method on all mailers
-require "sidekiq"
-
 module JsonRails
   class Application < Rails::Application
     config.i18n.enforce_available_locales = true

@@ -123,22 +123,6 @@ describe "movies API", :type => :request do
         .to eq "Indiana Jones and the Temple of Doom"
     end
 
-    it "notifies a fan of movie creation by email" do
-      movie_params_with_fan_email = {
-        "movie" => {
-          "title"     => "The Big Lebowski",
-          "director"  => "Joel and Ethan Coen",
-          "fan_email" => "the.dude@abides.net",
-        }
-      }
-
-      post "/api/movies", movie_params_with_fan_email.to_json,
-        accept_and_return_json
-
-      mail = ActionMailer::Base.deliveries.first
-      expect(mail.to).to eq ["the.dude@abides.net"]
-    end
-
     it "returns an error when passed incomplete arguments" do
       incomplete_movie_params = {
         "movie" => {

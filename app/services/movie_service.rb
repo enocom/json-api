@@ -5,9 +5,8 @@ class MovieService
   class MovieCreationError < StandardError; end
   class MovieLookupError < StandardError; end
 
-  def initialize(repo = MovieRepository.new, notifier = Notifier.new)
+  def initialize(repo = MovieRepository.new)
     @movie_repository = repo
-    @notifier = notifier
   end
 
   def all
@@ -22,7 +21,6 @@ class MovieService
 
   def create(params)
     movie_entity = movie_repository.create(params)
-    notifier.send_notification(movie_entity)
     movie_entity
   rescue MovieRepository::MissingArgumentError => e
     raise_creation_error
@@ -42,7 +40,7 @@ class MovieService
 
   private
 
-  attr_reader :movie_repository, :notifier
+  attr_reader :movie_repository
 
   def raise_lookup_error(e)
     raise MovieLookupError, e

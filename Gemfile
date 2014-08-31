@@ -4,7 +4,6 @@ ruby "2.1.2"
 gem "pg"
 gem "pry"
 gem "rails", "4.1.5"
-gem "sidekiq"
 gem "thin"
 
 group :development, :test do
