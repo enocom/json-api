@@ -1,8 +1,10 @@
 require_relative "../../app/services/movie_service"
+require_relative "../../app/services/notifier"
 require_relative "../../app/repositories/movie_repository"
+require_relative "../../app/entities/movie_entity"
 
 describe MovieService do
-  let(:fake_repo) { instance_double(MovieRepository) }
+  let(:fake_repo)     { instance_double(MovieRepository) }
 
   it "tells the repository to update a record" do
     allow(fake_repo).to receive(:update)
@@ -36,6 +38,22 @@ describe MovieService do
 
     expect(fake_repo).to have_received(:create).with(title: "Akira",
                                                      director: "Katsuhiro Otomo")
+  end
+
+  it "delegates notification to the notifier on creation" do
+    fake_notifier = instance_double(Notifier)
+    new_entity = MovieEntity.new(title: "Akira",
+                                 director: "Katsuhiro Otomo",
+                                 fan_email: "tetsuo.shima@neo-tokyo.net")
+    allow(fake_repo).to receive(:create).and_return(new_entity)
+    allow(fake_notifier).to receive(:send_notification)
+
+    MovieService.new(fake_repo, fake_notifier).
+      create(title: "Akira",
+             director: "Katsuhiro Otomo",
+             fan_email: "tetsuo.shima@neo-tokyo.net")
+
+    expect(fake_notifier).to have_received(:send_notification).with(new_entity)
   end
 
   it "delegates deletion responsibility to the responsitory" do

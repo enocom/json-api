@@ -46,9 +46,10 @@ class MovieRepository
 
   def create_entity(movie)
     MovieEntity.new(
-      :id       => movie.id,
-      :title    => movie.title,
-      :director => movie.director
+      :id        => movie.id,
+      :title     => movie.title,
+      :director  => movie.director,
+      :fan_email => movie.fan_email
     )
   end
 
