@@ -5,7 +5,7 @@
 
 A simple set of JSON RESTful endpoints using the repository pattern.
 
-This app lives at [json-rails.rocks](http://json-rails.rocks) and responds to requests at `/api/movies`.
+This app lives at [json-api.rocks](http://json-api.rocks) and responds to requests at `/api/movies`.
 
 See the post [here](http://commandercoriander.net/blog/2014/01/04/test-driving-a-json-api-in-rails/) for an introduction to how this app's API was written.
 
