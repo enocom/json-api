@@ -19,15 +19,15 @@ class MovieService
     raise_lookup_error(e)
   end
 
-  def create(params)
-    movie_entity = movie_repository.create(params)
+  def create(attributes)
+    movie_entity = movie_repository.create(attributes)
     movie_entity
   rescue MovieRepository::MissingArgumentError => e
     raise_creation_error
   end
 
-  def update(movie_id, params)
-    movie_repository.update(movie_id, params)
+  def update(movie_id, attributes)
+    movie_repository.update(movie_id, attributes)
   rescue MovieRepository::RecordNotFoundError => e
     raise_lookup_error(e)
   end
