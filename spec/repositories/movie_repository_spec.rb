@@ -6,7 +6,7 @@ describe MovieRepository do
   it "creates movies in the database" do
     expect {
       repository.create(:title => "Rashomon", :director => "Kurozawa Akira")
-    }.to change(Movie, :count).by(1)
+    }.to change(MovieDao, :count).by(1)
   end
 
   it "returns movie entities (and not Active Record objects)" do
@@ -15,15 +15,15 @@ describe MovieRepository do
   end
 
   it "returns all the persisted movies" do
-    Movie.create(:title => "Rear Window", :director => "Alfred Hitchcock")
-    Movie.create(:title => "Psycho", :director => "Alfred Hitchcock")
+    MovieDao.create(:title => "Rear Window", :director => "Alfred Hitchcock")
+    MovieDao.create(:title => "Psycho", :director => "Alfred Hitchcock")
     all_movies = repository.all
 
     expect(all_movies.map(&:title)).to match_array(["Rear Window", "Psycho"])
   end
 
   it "finds a movie by id" do
-    created_movie = Movie.create(
+    created_movie = MovieDao.create(
       :title => "Rear Window",
       :director => "Alfred Hitchcock"
     )
@@ -32,7 +32,7 @@ describe MovieRepository do
   end
 
   it "updates a movie by id" do
-    created_movie = Movie.create(
+    created_movie = MovieDao.create(
       :title => "Rear Window",
       :director => "Alfred Hitchcock"
     )
@@ -43,14 +43,14 @@ describe MovieRepository do
   end
 
   it "deletes movies from the database" do
-    created_movie = Movie.create(
+    created_movie = MovieDao.create(
       :title => "Rear Window",
       :director => "Alfred Hitchcock"
     )
 
     repository.destroy(created_movie.id)
 
-    expect(Movie.count).to be_zero
+    expect(MovieDao.count).to be_zero
   end
 
   describe "error handling" do
@@ -77,8 +77,8 @@ describe MovieRepository do
     end
 
     it "raises when trying to update a record to be invalid" do
-      existing_movie = Movie.create(title: "The Shawshank Redemption",
-                                    director: "Frank Durabont")
+      existing_movie = MovieDao.create(title: "The Shawshank Redemption",
+                                       director: "Frank Durabont")
 
       expect {
         repository.update(existing_movie.id, { title: ""})

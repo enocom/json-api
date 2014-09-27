@@ -1,5 +1,7 @@
 require "active_record"
 
-class Movie < ActiveRecord::Base
+class MovieDao < ActiveRecord::Base
+  self.table_name = :movies
+
   validates_presence_of :title, :director
 end
