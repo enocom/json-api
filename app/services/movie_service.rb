@@ -1,12 +1,11 @@
 require_relative "../repositories/movie_repository"
+require_relative "../factories/movie_factory"
 
 class MovieService
 
-  class MovieCreationError < StandardError; end
-  class MovieLookupError < StandardError; end
-
-  def initialize(repo = MovieRepository.new)
+  def initialize(repo = MovieRepository.new, factory = MovieFactory)
     @movie_repository = repo
+    @factory = factory
   end
 
   def all
@@ -15,39 +14,25 @@ class MovieService
 
   def find(movie_id)
     movie_repository.find_by_id(movie_id)
-  rescue MovieRepository::RecordNotFoundError => e
-    raise_lookup_error(e)
   end
 
   def create(attributes)
-    movie_entity = movie_repository.create(attributes)
+    new_entity = factory.create(attributes)
+    movie_entity = movie_repository.add(new_entity)
     movie_entity
-  rescue MovieRepository::MissingArgumentError => e
-    raise_creation_error
   end
 
   def update(movie_id, attributes)
-    movie_repository.update(movie_id, attributes)
-  rescue MovieRepository::RecordNotFoundError => e
-    raise_lookup_error(e)
+    entity_to_update = factory.create(attributes.merge(:id => movie_id))
+    movie_repository.update(entity_to_update)
   end
 
   def destroy(movie_id)
     movie_repository.destroy(movie_id)
-  rescue MovieRepository::RecordNotFoundError => e
-    raise_lookup_error(e)
   end
 
   private
 
-  attr_reader :movie_repository
-
-  def raise_lookup_error(e)
-    raise MovieLookupError, e
-  end
-
-  def raise_creation_error
-    raise MovieCreationError, "Movie creation failed: Missing title or director param"
-  end
+  attr_reader :movie_repository, :factory
 
 end

@@ -10,7 +10,9 @@ describe MovieService do
 
     MovieService.new(fake_repo).update(123, { title: "Rear Window" })
 
-    expect(fake_repo).to have_received(:update).with(123, { title: "Rear Window" })
+    expect(fake_repo).to have_received(:update) do |received_entity|
+      expect(received_entity.title).to eq "Rear Window"
+    end
   end
 
   it "tells the repository to find a single movie" do
@@ -31,13 +33,15 @@ describe MovieService do
   end
 
   it "delegates creation responsibility to the repository" do
-    allow(fake_repo).to receive(:create)
+    allow(fake_repo).to receive(:add)
 
     MovieService.new(fake_repo).
       create(title: "Akira", director: "Katsuhiro Otomo")
 
-    expect(fake_repo).to have_received(:create).with(title: "Akira",
-                                                     director: "Katsuhiro Otomo")
+    expect(fake_repo).to have_received(:add) do |received_entity|
+      expect(received_entity.title).to eq "Akira"
+      expect(received_entity.director).to eq "Katsuhiro Otomo"
+    end
   end
 
   it "delegates deletion responsibility to the responsitory" do
@@ -49,41 +53,4 @@ describe MovieService do
     expect(fake_repo).to have_received(:destroy).with(movie_to_delete_id)
   end
 
-  describe "error handling" do
-    it "raises an error when trying to update a non-existant record" do
-      allow(fake_repo).to receive(:update).and_raise(MovieRepository::RecordNotFoundError)
-
-      expect {
-        MovieService.new(fake_repo).update(123, { title: "Rear Window" })
-      }.to raise_error(MovieService::MovieLookupError)
-    end
-
-
-    it "raises an error when looking up a movie fails" do
-      allow(fake_repo).to receive(:find_by_id).and_raise(MovieRepository::RecordNotFoundError)
-
-      bad_movie_id = 1
-      expect {
-        MovieService.new(fake_repo).find(bad_movie_id)
-      }.to raise_error(MovieService::MovieLookupError)
-    end
-
-    it "raises an error when deleting a movie fails" do
-      allow(fake_repo).to receive(:destroy).and_raise(MovieRepository::RecordNotFoundError)
-
-      bad_movie_id = 1
-      expect {
-        MovieService.new(fake_repo).destroy(bad_movie_id)
-      }.to raise_error(MovieService::MovieLookupError)
-    end
-
-    it "raises a creation error when the repo fails to create a record" do
-      allow(fake_repo).to receive(:create).and_raise(MovieRepository::MissingArgumentError)
-
-      expect {
-        MovieService.new(fake_repo).create(title: "Paprika")
-      }.to raise_error(MovieService::MovieCreationError)
-    end
-
-  end
 end
