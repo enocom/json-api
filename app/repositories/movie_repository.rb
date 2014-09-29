@@ -2,45 +2,42 @@ require_relative "../daos/movie_dao"
 require_relative "../entities/movie_entity"
 
 class MovieRepository
+  def initialize(factory = MovieFactory)
+    @factory = factory
+  end
 
   def add(entity)
     record = MovieDao.new(entity.attributes)
     record.save
 
-    MovieFactory.create(record)
+    factory.create(record)
   end
 
   def update(entity)
     record = MovieDao.find(entity.id)
     record.update(entity.attributes)
 
-    MovieFactory.create(record)
+    factory.create(record)
   end
 
   def find_by_id(id)
     found_movie = MovieDao.find(id)
-    create_entity(found_movie)
+    factory.create(found_movie)
   end
 
   def destroy(id)
     destroyed_movie = MovieDao.destroy(id)
-    create_entity(destroyed_movie)
+    factory.create(destroyed_movie)
   end
 
   def all
     MovieDao.all.map do |m|
-      create_entity(m)
+      factory.create(m)
     end
   end
 
   private
 
-  def create_entity(movie)
-    MovieEntity.new(
-      :id        => movie.id,
-      :title     => movie.title,
-      :director  => movie.director
-    )
-  end
+  attr_reader :factory
 
 end
