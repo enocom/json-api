@@ -2,7 +2,8 @@ require_relative "../daos/movie_dao"
 require_relative "../entities/movie_entity"
 
 class MovieRepository
-  class RecordNotFound < StandardError; end
+  class RecordNotFoundError < StandardError; end
+  class RecordInvalidError < StandardError; end
 
   def initialize(factory = MovieFactory)
     @factory = factory
@@ -10,8 +11,10 @@ class MovieRepository
 
   def add(entity)
     record = MovieDao.new(entity.attributes)
-    record.save
+    record.save!
     factory.create(record)
+  rescue ActiveRecord::RecordInvalid => e
+    raise RecordInvalidError
   end
 
   def update(entity)
@@ -19,6 +22,8 @@ class MovieRepository
     record.update!(entity.attributes)
     factory.create(record)
 
+  rescue ActiveRecord::RecordInvalid => e
+    raise RecordInvalidError
   rescue ActiveRecord::RecordNotFound
     raise_record_not_found(entity.id)
   end
@@ -48,7 +53,7 @@ class MovieRepository
   attr_reader :factory
 
   def raise_record_not_found(record_id)
-    raise RecordNotFound, "The record with 'id'=#{record_id} was not found."
+    raise RecordNotFoundError, "The record with 'id'=#{record_id} was not found."
   end
 
 end

@@ -73,19 +73,45 @@ describe MovieRepository do
     it "raises an error when finding a non-existent record" do
       expect {
         repository.find_by_id(999)
-      }.to raise_error(MovieRepository::RecordNotFound, /not found/)
+      }.to raise_error(MovieRepository::RecordNotFoundError, /not found/)
     end
 
     it "raises an error when updating a non-existent record" do
       expect {
         repository.update(MovieEntity.new(id: 999))
-      }.to raise_error(MovieRepository::RecordNotFound, /not found/)
+      }.to raise_error(MovieRepository::RecordNotFoundError, /not found/)
     end
 
     it "raises an error when deleting a non-existent record" do
       expect {
         repository.destroy(999)
-      }.to raise_error(MovieRepository::RecordNotFound, /not found/)
+      }.to raise_error(MovieRepository::RecordNotFoundError, /not found/)
+    end
+
+    it "raises an error for an invalid update" do
+      movie = MovieDao.create(
+        :title => "The Empire Strikes Back",
+        :director => "George Lucas"
+      )
+
+      invalid_update = MovieEntity.new(
+        :id => movie.id,
+        :title => "The Empire Strikes Again"
+      )
+
+      expect {
+        repository.update(invalid_update)
+      }.to raise_error(MovieRepository::RecordInvalidError)
+    end
+
+    it "raises an error when creating an invalid record" do
+      invalid_record = MovieEntity.new(
+        :title => "The Empire Strikes Again" # No director
+      )
+
+      expect {
+        repository.add(invalid_record)
+      }.to raise_error(MovieRepository::RecordInvalidError)
     end
   end
 
