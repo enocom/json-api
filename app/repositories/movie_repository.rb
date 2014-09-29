@@ -20,14 +20,14 @@ class MovieRepository
     factory.create(record)
 
   rescue ActiveRecord::RecordNotFound
-    raise RecordNotFound, "The record with 'id'=#{entity.id} was not found."
+    raise_record_not_found(entity.id)
   end
 
   def find_by_id(id)
     found_movie = MovieDao.find(id)
     factory.create(found_movie)
   rescue ActiveRecord::RecordNotFound
-    raise RecordNotFound, "The record with 'id'=#{id} was not found."
+    raise_record_not_found(id)
   end
 
   def destroy(id)
@@ -44,5 +44,9 @@ class MovieRepository
   private
 
   attr_reader :factory
+
+  def raise_record_not_found(record_id)
+    raise RecordNotFound, "The record with 'id'=#{record_id} was not found."
+  end
 
 end
