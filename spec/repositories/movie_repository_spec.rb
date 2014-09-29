@@ -81,6 +81,12 @@ describe MovieRepository do
         repository.update(MovieEntity.new(id: 999))
       }.to raise_error(MovieRepository::RecordNotFound, /not found/)
     end
+
+    it "raises an error when deleting a non-existent record" do
+      expect {
+        repository.destroy(999)
+      }.to raise_error(MovieRepository::RecordNotFound, /not found/)
+    end
   end
 
 end

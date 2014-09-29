@@ -33,6 +33,8 @@ class MovieRepository
   def destroy(id)
     destroyed_movie = MovieDao.destroy(id)
     factory.create(destroyed_movie)
+  rescue ActiveRecord::RecordNotFound
+    raise_record_not_found(id)
   end
 
   def all
