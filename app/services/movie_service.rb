@@ -18,8 +18,7 @@ class MovieService
 
   def create(attributes)
     new_entity = factory.create(attributes)
-    movie_entity = movie_repository.add(new_entity)
-    movie_entity
+    movie_repository.add(new_entity)
   end
 
   def update(movie_id, attributes)
