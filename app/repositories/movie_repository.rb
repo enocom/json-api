@@ -16,9 +16,11 @@ class MovieRepository
 
   def update(entity)
     record = MovieDao.find(entity.id)
-    record.update(entity.attributes)
-
+    record.update!(entity.attributes)
     factory.create(record)
+
+  rescue ActiveRecord::RecordNotFound
+    raise RecordNotFound, "The record with 'id'=#{entity.id} was not found."
   end
 
   def find_by_id(id)

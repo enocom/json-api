@@ -70,9 +70,15 @@ describe MovieRepository do
   end
 
   describe "error handling" do
-    it "raises an error when a record is not found" do
+    it "raises an error when finding a non-existent record" do
       expect {
         repository.find_by_id(999)
+      }.to raise_error(MovieRepository::RecordNotFound, /not found/)
+    end
+
+    it "raises an error when updating a non-existent record" do
+      expect {
+        repository.update(MovieEntity.new(id: 999))
       }.to raise_error(MovieRepository::RecordNotFound, /not found/)
     end
   end
