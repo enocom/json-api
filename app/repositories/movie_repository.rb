@@ -2,6 +2,8 @@ require_relative "../daos/movie_dao"
 require_relative "../entities/movie_entity"
 
 class MovieRepository
+  class RecordNotFound < StandardError; end
+
   def initialize(factory = MovieFactory)
     @factory = factory
   end
@@ -9,7 +11,6 @@ class MovieRepository
   def add(entity)
     record = MovieDao.new(entity.attributes)
     record.save
-
     factory.create(record)
   end
 
@@ -23,6 +24,8 @@ class MovieRepository
   def find_by_id(id)
     found_movie = MovieDao.find(id)
     factory.create(found_movie)
+  rescue ActiveRecord::RecordNotFound
+    raise RecordNotFound, "The record with 'id'=#{id} was not found."
   end
 
   def destroy(id)

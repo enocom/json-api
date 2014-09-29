@@ -69,4 +69,12 @@ describe MovieRepository do
     expect(MovieDao.count).to be_zero
   end
 
+  describe "error handling" do
+    it "raises an error when a record is not found" do
+      expect {
+        repository.find_by_id(999)
+      }.to raise_error(MovieRepository::RecordNotFound, /not found/)
+    end
+  end
+
 end
