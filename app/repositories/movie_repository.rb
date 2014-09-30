@@ -8,35 +8,42 @@ class MovieRepository
 
   def add(entity)
     record = MovieDao.new(entity.attributes)
-    record.save!
-    factory.create(record)
-  rescue ActiveRecord::RecordInvalid => e
-    raise RecordInvalidError
+
+    if record.save
+      factory.create(record)
+    else
+      nil
+    end
   end
 
   def update(entity)
-    record = MovieDao.find(entity.id)
-    record.update!(entity.attributes)
-    factory.create(record)
+    record = MovieDao.where(id: entity.id).first
 
-  rescue ActiveRecord::RecordInvalid => e
-    raise RecordInvalidError
-  rescue ActiveRecord::RecordNotFound
-    raise_record_not_found(entity.id)
+    if record && record.update(entity.attributes)
+      factory.create(record)
+    else
+      nil
+    end
   end
 
   def find_by_id(id)
-    found_movie = MovieDao.find(id)
-    factory.create(found_movie)
-  rescue ActiveRecord::RecordNotFound
-    raise_record_not_found(id)
+    found_movie = MovieDao.where(id: id).first
+
+    if found_movie
+      factory.create(found_movie)
+    else
+      nil
+    end
   end
 
   def destroy(id)
-    destroyed_movie = MovieDao.destroy(id)
-    factory.create(destroyed_movie)
-  rescue ActiveRecord::RecordNotFound
-    raise_record_not_found(id)
+    destroyed_record_count = MovieDao.delete(id)
+
+    if destroyed_record_count.zero?
+      false
+    else
+      true
+    end
   end
 
   def all
@@ -48,25 +55,5 @@ class MovieRepository
   private
 
   attr_reader :factory
-
-  def raise_record_not_found(record_id)
-    raise RecordNotFoundError.new(record_id)
-  end
-
-  class RecordNotFoundError < StandardError;
-    def initialize(bad_record_id)
-      @bad_record_id = bad_record_id
-    end
-
-    def message
-      "The record with 'id'=#{bad_record_id} was not found."
-    end
-
-    private
-
-    attr_reader :bad_record_id
-  end
-
-  class RecordInvalidError < StandardError; end
 
 end

@@ -14,11 +14,6 @@ describe MovieRepository do
     }.to change(MovieDao, :count).by(1)
   end
 
-  # it "returns a store result object (and not Active Record objects)" do
-  #   result = repository.create(:title => "Rashomon", :director => "Kurozawa Akira")
-  #   expect(result).to be_kind_of(PersistenceResult)
-  # end
-
   it "returns all the persisted movies" do
     MovieDao.create(:title => "Rear Window", :director => "Alfred Hitchcock")
     MovieDao.create(:title => "Psycho", :director => "Alfred Hitchcock")
@@ -64,31 +59,30 @@ describe MovieRepository do
       :director => "Alfred Hitchcock"
     )
 
-    repository.destroy(persisted_movie.id)
+    result = repository.destroy(persisted_movie.id)
+    expect(result).to eq true
 
     expect(MovieDao.count).to be_zero
   end
 
   describe "error handling" do
-    it "raises an error when finding a non-existent record" do
-      expect {
-        repository.find_by_id(999)
-      }.to raise_error(MovieRepository::RecordNotFoundError, /not found/)
+    it "returns nil when finding a non-existent record" do
+      result = repository.find_by_id(999)
+
+      expect(result).to be_nil
     end
 
-    it "raises an error when updating a non-existent record" do
-      expect {
-        repository.update(MovieEntity.new(id: 999))
-      }.to raise_error(MovieRepository::RecordNotFoundError, /not found/)
+    it "returns nil when updating a non-existent record" do
+      result = repository.update(MovieEntity.new(id: 999))
+      expect(result).to be_nil
     end
 
-    it "raises an error when deleting a non-existent record" do
-      expect {
-        repository.destroy(999)
-      }.to raise_error(MovieRepository::RecordNotFoundError, /not found/)
+    it "returns false when deleting a non-existent record" do
+      result = repository.destroy(999)
+      expect(result).to eq false
     end
 
-    it "raises an error for an invalid update" do
+    it "returns nil for an invalid update" do
       movie = MovieDao.create(
         :title => "The Empire Strikes Back",
         :director => "George Lucas"
@@ -99,19 +93,17 @@ describe MovieRepository do
         :title => "The Empire Strikes Again"
       )
 
-      expect {
-        repository.update(invalid_update)
-      }.to raise_error(MovieRepository::RecordInvalidError)
+      result = repository.update(invalid_update)
+      expect(result).to be_nil
     end
 
-    it "raises an error when creating an invalid record" do
+    it "returns nil when creating an invalid record" do
       invalid_record = MovieEntity.new(
         :title => "The Empire Strikes Again" # No director
       )
 
-      expect {
-        repository.add(invalid_record)
-      }.to raise_error(MovieRepository::RecordInvalidError)
+      result = repository.add(invalid_record)
+      expect(result).to be_nil
     end
   end
 
