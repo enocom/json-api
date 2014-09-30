@@ -1,5 +1,7 @@
 require_relative "../daos/movie_dao"
 require_relative "../entities/movie_entity"
+require_relative "../shared/store_result"
+require_relative "../shared/error_factory"
 
 class MovieRepository
   def initialize(factory = MovieFactory)
@@ -10,19 +12,40 @@ class MovieRepository
     record = MovieDao.new(entity.attributes)
 
     if record.save
-      factory.create(record)
+      StoreResult.new(
+        entity: factory.create(record),
+        success: true,
+        errors: nil
+      )
     else
-      nil
+      StoreResult.new(
+        entity: nil,
+        success: false,
+        errors: ErrorFactory.create(record.errors)
+      )
     end
   end
 
   def update(entity)
     record = MovieDao.where(id: entity.id).first
 
-    if record && record.update(entity.attributes)
-      factory.create(record)
+    if record && record.update_attributes(entity.attributes)
+      StoreResult.new(
+        entity: factory.create(record),
+        success: true,
+        errors: nil
+      )
     else
-      nil
+      errors = if record
+                 ErrorFactory.create(record.errors)
+               else
+                 {base: "A record with 'id'=#{entity.id} was not found."}
+               end
+      StoreResult.new(
+        entity: nil,
+        success: false,
+        errors: errors
+      )
     end
   end
 
@@ -30,9 +53,17 @@ class MovieRepository
     found_movie = MovieDao.where(id: id).first
 
     if found_movie
-      factory.create(found_movie)
+      StoreResult.new(
+        entity: factory.create(found_movie),
+        success: true,
+        errors: nil
+      )
     else
-      nil
+      StoreResult.new(
+        entity: nil,
+        success: false,
+        errors: {base: "A record with 'id'=#{id} was not found."}
+      )
     end
   end
 
@@ -40,9 +71,17 @@ class MovieRepository
     destroyed_record_count = MovieDao.delete(id)
 
     if destroyed_record_count.zero?
-      false
+      StoreResult.new(
+        entity: nil,
+        success: false,
+        errors: {base: "A record with 'id'=#{id} was not found."}
+      )
     else
-      true
+      StoreResult.new(
+        entity: nil,
+        success: true,
+        errors: nil
+      )
     end
   end
 

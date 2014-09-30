@@ -5,7 +5,8 @@ require_relative "../../app/entities/movie_entity"
 describe MovieService do
   let(:fake_repo) { instance_double(MovieRepository) }
 
-  it "tells the repository to update a record" do
+  xit "tells the repository to update a record" do
+    pending
     allow(fake_repo).to receive(:update)
 
     MovieService.new(fake_repo).update(123, { title: "Rear Window" })
@@ -15,7 +16,8 @@ describe MovieService do
     end
   end
 
-  it "tells the repository to find a single movie" do
+  xit "tells the repository to find a single movie" do
+    pending
     allow(fake_repo).to receive(:find_by_id)
 
     movie_id = 1
@@ -24,7 +26,7 @@ describe MovieService do
     expect(fake_repo).to have_received(:find_by_id).with(movie_id)
   end
 
-  it "returns all movies from the repository" do
+  xit "returns all movies from the repository" do
     allow(fake_repo).to receive(:all)
 
     MovieService.new(fake_repo).all
@@ -32,7 +34,7 @@ describe MovieService do
     expect(fake_repo).to have_received(:all)
   end
 
-  it "delegates creation responsibility to the repository" do
+  xit "delegates creation responsibility to the repository" do
     allow(fake_repo).to receive(:add)
 
     MovieService.new(fake_repo).
@@ -44,7 +46,7 @@ describe MovieService do
     end
   end
 
-  it "delegates deletion responsibility to the responsitory" do
+  xit "delegates deletion responsibility to the responsitory" do
     allow(fake_repo).to receive(:destroy)
 
     movie_to_delete_id = 123

@@ -30,10 +30,11 @@ describe MovieRepository do
       :director => "Alfred Hitchcock"
     )
 
-    movie = repository.find_by_id(created_movie.id)
+    result = repository.find_by_id(created_movie.id)
 
-    expect(movie.class).to eq MovieEntity
-    expect(movie.title).to eq "Rear Window"
+    expect(result.class).to eq StoreResult
+    expect(result.success?).to eq true
+    expect(result.entity.title).to eq "Rear Window"
   end
 
   it "updates a movie" do
@@ -48,9 +49,13 @@ describe MovieRepository do
       :director => persisted_movie.director
     )
 
-    repository.update(movie_with_updated_title)
+    result = repository.update(movie_with_updated_title)
 
     expect(persisted_movie.reload.title).to eq "North by Northwest"
+
+    expect(result.class).to eq StoreResult
+    expect(result.success?).to eq true
+    expect(result.entity.title).to eq "North by Northwest"
   end
 
   it "deletes movies from the database" do
@@ -60,29 +65,43 @@ describe MovieRepository do
     )
 
     result = repository.destroy(persisted_movie.id)
-    expect(result).to eq true
+
+    expect(result.class).to eq StoreResult
+    expect(result.success?).to eq true
+    expect(result.entity).to be_nil
 
     expect(MovieDao.count).to be_zero
   end
 
   describe "error handling" do
-    it "returns nil when finding a non-existent record" do
+    it "returns errors when finding a non-existent record" do
       result = repository.find_by_id(999)
 
-      expect(result).to be_nil
+      expect(result.class).to eq StoreResult
+      expect(result.success?).to eq false
+      expect(result.entity).to be_nil
+      expect(result.errors).to eq({base: "A record with 'id'=999 was not found."})
     end
 
-    it "returns nil when updating a non-existent record" do
+    it "returns errors when updating a non-existent record" do
       result = repository.update(MovieEntity.new(id: 999))
-      expect(result).to be_nil
+
+      expect(result.class).to eq StoreResult
+      expect(result.success?).to eq false
+      expect(result.entity).to be_nil
+      expect(result.errors).to eq({base: "A record with 'id'=999 was not found."})
     end
 
     it "returns false when deleting a non-existent record" do
       result = repository.destroy(999)
-      expect(result).to eq false
+
+      expect(result.class).to eq StoreResult
+      expect(result.success?).to eq false
+      expect(result.entity).to be_nil
+      expect(result.errors).to eq({base: "A record with 'id'=999 was not found."})
     end
 
-    it "returns nil for an invalid update" do
+    it "returns validation errors for an invalid update" do
       movie = MovieDao.create(
         :title => "The Empire Strikes Back",
         :director => "George Lucas"
@@ -94,16 +113,26 @@ describe MovieRepository do
       )
 
       result = repository.update(invalid_update)
-      expect(result).to be_nil
+
+      expect(result.class).to eq StoreResult
+      expect(result.success?).to eq false
+      expect(result.entity).to be_nil
+      expect(result.errors).to match_array([{field: "director",
+                                             message: "can't be blank"}])
     end
 
-    it "returns nil when creating an invalid record" do
+    it "returns validation errors when creating an invalid record" do
       invalid_record = MovieEntity.new(
         :title => "The Empire Strikes Again" # No director
       )
 
       result = repository.add(invalid_record)
-      expect(result).to be_nil
+
+      expect(result.class).to eq StoreResult
+      expect(result.success?).to eq false
+      expect(result.entity).to be_nil
+      expect(result.errors).to match_array([{field: "director",
+                                             message: "can't be blank"}])
     end
   end
 

@@ -13,17 +13,17 @@ class MovieService
   end
 
   def find(movie_id)
-    movie_repository.find_by_id(movie_id)
+    movie_repository.find_by_id(movie_id).entity
   end
 
   def create(attributes)
     new_entity = factory.create(attributes)
-    movie_repository.add(new_entity)
+    movie_repository.add(new_entity).entity
   end
 
   def update(movie_id, attributes)
     entity_to_update = factory.create(attributes.merge(:id => movie_id))
-    movie_repository.update(entity_to_update)
+    movie_repository.update(entity_to_update).entity
   end
 
   def destroy(movie_id)

@@ -45,7 +45,7 @@ describe "movies API", :type => :request do
           :title    => "2001: A Space Odyssy",
           :director => "Stanley Kubrick"
         )
-      )
+      ).entity
     end
 
     it "returns a requested movie" do
@@ -66,7 +66,7 @@ describe "movies API", :type => :request do
           :title    => "Star Battles",
           :director => "Leorge Gucas"
         )
-      )
+      ).entity
     end
 
     let(:movie_params) do
@@ -118,7 +118,7 @@ describe "movies API", :type => :request do
           :title    => "The Shining",
           :director => "Stanley Kubrick"
         )
-      )
+      ).entity
     end
 
     it "deletes a movie" do
