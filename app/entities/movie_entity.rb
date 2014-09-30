@@ -22,4 +22,8 @@ class MovieEntity
     end
   end
 
+  def persisted?
+    !id.nil?
+  end
+
 end
