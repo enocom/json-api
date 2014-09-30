@@ -46,7 +46,7 @@ module Api
       movie_service.destroy(params[:id])
     end
 
-    def destroy_success
+    def destroy_success(_)
       head :no_content
     end
 
