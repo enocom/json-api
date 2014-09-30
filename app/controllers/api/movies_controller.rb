@@ -30,7 +30,7 @@ module Api
     end
 
     def create
-      created_movie = movie_service.create(movie_params)
+      movie_service.create(movie_params)
     end
 
     def create_success(record)
