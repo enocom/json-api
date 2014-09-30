@@ -6,7 +6,6 @@ describe MovieService do
   let(:fake_repo) { instance_double(MovieRepository) }
 
   xit "tells the repository to update a record" do
-    pending
     allow(fake_repo).to receive(:update)
 
     MovieService.new(fake_repo).update(123, { title: "Rear Window" })
@@ -17,7 +16,6 @@ describe MovieService do
   end
 
   xit "tells the repository to find a single movie" do
-    pending
     allow(fake_repo).to receive(:find_by_id)
 
     movie_id = 1
