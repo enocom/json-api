@@ -4,12 +4,13 @@ require_relative "../shared/store_result"
 require_relative "../shared/error_factory"
 
 class MovieRepository
-  def initialize(factory = MovieFactory)
+  def initialize(factory = MovieFactory, dao = MovieDao)
     @factory = factory
+    @dao = dao
   end
 
   def add(entity)
-    record = MovieDao.new(entity.attributes)
+    record = dao.new(entity.attributes)
 
     if record.save
       return successful_result(record)
@@ -19,7 +20,7 @@ class MovieRepository
   end
 
   def update(entity)
-    record = MovieDao.where(id: entity.id).first
+    record = dao.where(id: entity.id).first
 
     if record && record.update_attributes(entity.attributes)
       return successful_result(record)
@@ -33,7 +34,7 @@ class MovieRepository
   end
 
   def find_by_id(id)
-    found_movie = MovieDao.where(id: id).first
+    found_movie = dao.where(id: id).first
 
     if found_movie
       return successful_result(found_movie)
@@ -43,7 +44,7 @@ class MovieRepository
   end
 
   def destroy(id)
-    destroyed_record_count = MovieDao.delete(id)
+    destroyed_record_count = dao.delete(id)
 
     if destroyed_record_count.zero?
       return failed_result(id)
@@ -53,14 +54,14 @@ class MovieRepository
   end
 
   def all
-    MovieDao.all.map do |m|
+    dao.all.map do |m|
       factory.create(m)
     end
   end
 
   private
 
-  attr_reader :factory
+  attr_reader :factory, :dao
 
   def successful_result(record = nil)
     entity = record ? factory.create(record) : nil
