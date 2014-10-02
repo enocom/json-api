@@ -13,7 +13,7 @@ module Api
     end
 
     def show_failure(error)
-      render json: error, status: 404
+      render json: { errors: error }, status: :not_found
     end
 
     def update
@@ -25,7 +25,7 @@ module Api
     end
 
     def update_failure(error)
-      # pending
+      render json: {errors: error}, status: :unprocessable_entity
     end
 
     def create
@@ -38,7 +38,7 @@ module Api
     end
 
     def create_failure(error)
-      # pending
+      render json: {errors: error}, status: :unprocessable_entity
     end
 
     def destroy
@@ -50,7 +50,7 @@ module Api
     end
 
     def destroy_failure(error)
-      # pending
+      render json: { errors: error }, status: :not_found
     end
 
     private

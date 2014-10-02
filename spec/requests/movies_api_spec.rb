@@ -57,6 +57,23 @@ describe "movies API", :type => :request do
       expect(body["title"]).to eq "2001: A Space Odyssy"
       expect(body["director"]).to eq "Stanley Kubrick"
     end
+
+    it "returns an error for a bad ID" do
+      get "/api/movies/999", {}, accept_json
+
+      expect(response.status).to be 404
+
+      body = JSON.parse(response.body)
+
+      expect(body).to eq({
+        "errors" => [
+          {
+            "field"=>"base",
+            "message"=>"A record with 'id'=999 was not found."
+          }
+        ]
+      })
+    end
   end
 
   describe "PUT /api/movies/:id" do
@@ -85,6 +102,25 @@ describe "movies API", :type => :request do
       expect(body["title"]).to eq "Star Wars"
       expect(body["director"]).to eq "George Lucas"
     end
+
+    it "returns an error for a bad update" do
+      put "/api/movies/999",
+        {title: ""}.to_json,
+        accept_and_return_json
+
+      expect(response.status).to be 422
+
+      body = JSON.parse(response.body)
+
+      expect(body).to eq({
+        "errors" => [
+          {
+            "field"=>"base",
+            "message"=>"A record with 'id'=999 was not found."
+          }
+        ]
+      })
+    end
   end
 
   describe "POST /api/movies" do
@@ -109,6 +145,28 @@ describe "movies API", :type => :request do
         .to eq "Indiana Jones and the Temple of Doom"
     end
 
+    it "returns an error for invalid creation" do
+      post "/api/movies",
+        {title: "", director: ""}.to_json,
+        accept_and_return_json
+
+      expect(response.status).to be 422
+
+      body = JSON.parse(response.body)
+
+      expect(body).to eq({
+        "errors" => [
+          {
+            "field"=>"title",
+            "message"=>"can't be blank"
+          },
+          {
+            "field"=>"director",
+            "message"=>"can't be blank"
+          }
+        ]
+      })
+    end
   end
 
   describe "DELETE /api/movies/:id" do
@@ -125,6 +183,23 @@ describe "movies API", :type => :request do
       delete "/api/movies/#{movie.id}", {}, accept_json
 
       expect(response.status).to be 204
+    end
+
+    it "returns an error for a bad ID" do
+      delete "/api/movies/999", {}, accept_json
+
+      expect(response.status).to be 404
+
+      body = JSON.parse(response.body)
+
+      expect(body).to eq({
+        "errors" => [
+          {
+            "field"=>"base",
+            "message"=>"A record with 'id'=999 was not found."
+          }
+        ]
+      })
     end
   end
 end
