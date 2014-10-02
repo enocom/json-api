@@ -12,17 +12,9 @@ class MovieRepository
     record = MovieDao.new(entity.attributes)
 
     if record.save
-      StoreResult.new(
-        entity: factory.create(record),
-        success: true,
-        errors: nil
-      )
+      return_successful_result(record)
     else
-      StoreResult.new(
-        entity: nil,
-        success: false,
-        errors: ErrorFactory.create(record.errors)
-      )
+      return_failed_result_with_errors(record.errors)
     end
   end
 
@@ -30,22 +22,13 @@ class MovieRepository
     record = MovieDao.where(id: entity.id).first
 
     if record && record.update_attributes(entity.attributes)
-      StoreResult.new(
-        entity: factory.create(record),
-        success: true,
-        errors: nil
-      )
+      return_successful_result(record)
     else
-      errors = if record
-                 ErrorFactory.create(record.errors)
-               else
-                 {base: "A record with 'id'=#{entity.id} was not found."}
-               end
-      StoreResult.new(
-        entity: nil,
-        success: false,
-        errors: errors
-      )
+      if record
+        return_failed_result_with_errors(record.errors)
+      else
+        return_failed_result(entity.id)
+      end
     end
   end
 
@@ -53,17 +36,9 @@ class MovieRepository
     found_movie = MovieDao.where(id: id).first
 
     if found_movie
-      StoreResult.new(
-        entity: factory.create(found_movie),
-        success: true,
-        errors: nil
-      )
+      return_successful_result(found_movie)
     else
-      StoreResult.new(
-        entity: nil,
-        success: false,
-        errors: {base: "A record with 'id'=#{id} was not found."}
-      )
+      return_failed_result(id)
     end
   end
 
@@ -71,17 +46,9 @@ class MovieRepository
     destroyed_record_count = MovieDao.delete(id)
 
     if destroyed_record_count.zero?
-      StoreResult.new(
-        entity: nil,
-        success: false,
-        errors: {base: "A record with 'id'=#{id} was not found."}
-      )
+      return_failed_result(id)
     else
-      StoreResult.new(
-        entity: nil,
-        success: true,
-        errors: nil
-      )
+      return_successful_result
     end
   end
 
@@ -94,5 +61,31 @@ class MovieRepository
   private
 
   attr_reader :factory
+
+  def return_successful_result(record = nil)
+    entity = record ? factory.create(record) : nil
+
+    StoreResult.new(
+      entity: entity,
+      success: true,
+      errors: nil
+    )
+  end
+
+  def return_failed_result(id)
+    StoreResult.new(
+      entity: nil,
+      success: false,
+      errors: {base: "A record with 'id'=#{id} was not found."}
+    )
+  end
+
+  def return_failed_result_with_errors(errors)
+    StoreResult.new(
+      entity: nil,
+      success: false,
+      errors: ErrorFactory.create(errors)
+    )
+  end
 
 end
