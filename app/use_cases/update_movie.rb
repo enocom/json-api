@@ -5,6 +5,6 @@ UpdateMovie = ->(id:, attributes:, repo: MovieRepository.new, listener: NullList
   if result.success?
     listener.update_success(result.entity)
   else
-    listener.update_failure(result.error)
+    listener.update_failure(result.errors)
   end
 end

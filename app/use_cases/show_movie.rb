@@ -4,6 +4,6 @@ ShowMovie = ->(id:, repo: MovieRepository.new, listener: NullListener.new) do
   if result.success?
     listener.show_success(result.entity)
   else
-    listener.show_failure(result.error)
+    listener.show_failure(result.errors)
   end
 end

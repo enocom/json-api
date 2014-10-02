@@ -5,7 +5,7 @@ CreateMovie = ->(attributes:, repo: MovieRepository.new, listener: NullListener.
   if result.success?
     listener.create_success(result.entity)
   else
-    listener.create_failure(result.error)
+    listener.create_failure(result.errors)
   end
 end
 
