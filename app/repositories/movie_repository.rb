@@ -74,6 +74,7 @@ class MovieRepository
 
   def failed_result(id)
     error = {base: "A record with 'id'=#{id} was not found."}
+
     StoreResult.new(
       entity: nil,
       success: false,
