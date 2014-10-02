@@ -12,44 +12,44 @@ class MovieRepository
     record = MovieDao.new(entity.attributes)
 
     if record.save
-      return_successful_result(record)
-    else
-      return_failed_result_with_errors(record.errors)
+      return successful_result(record)
     end
+
+    failed_result_with_errors(record.errors)
   end
 
   def update(entity)
     record = MovieDao.where(id: entity.id).first
 
     if record && record.update_attributes(entity.attributes)
-      return_successful_result(record)
-    else
-      if record
-        return_failed_result_with_errors(record.errors)
-      else
-        return_failed_result(entity.id)
-      end
+      return successful_result(record)
     end
+
+    if record
+      return failed_result_with_errors(record.errors)
+    end
+
+    failed_result(entity.id)
   end
 
   def find_by_id(id)
     found_movie = MovieDao.where(id: id).first
 
     if found_movie
-      return_successful_result(found_movie)
-    else
-      return_failed_result(id)
+      return successful_result(found_movie)
     end
+
+    failed_result(id)
   end
 
   def destroy(id)
     destroyed_record_count = MovieDao.delete(id)
 
     if destroyed_record_count.zero?
-      return_failed_result(id)
-    else
-      return_successful_result
+      return failed_result(id)
     end
+
+    successful_result
   end
 
   def all
@@ -62,7 +62,7 @@ class MovieRepository
 
   attr_reader :factory
 
-  def return_successful_result(record = nil)
+  def successful_result(record = nil)
     entity = record ? factory.create(record) : nil
 
     StoreResult.new(
@@ -72,7 +72,7 @@ class MovieRepository
     )
   end
 
-  def return_failed_result(id)
+  def failed_result(id)
     StoreResult.new(
       entity: nil,
       success: false,
@@ -80,7 +80,7 @@ class MovieRepository
     )
   end
 
-  def return_failed_result_with_errors(errors)
+  def failed_result_with_errors(errors)
     StoreResult.new(
       entity: nil,
       success: false,
