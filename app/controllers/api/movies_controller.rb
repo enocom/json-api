@@ -12,8 +12,8 @@ module Api
       render json: record
     end
 
-    def show_failure(error)
-      render json: { errors: error }, status: :not_found
+    def show_failure(errors)
+      render json: { errors: errors }, status: :not_found
     end
 
     def update
@@ -24,8 +24,8 @@ module Api
       render json: record
     end
 
-    def update_failure(error)
-      render json: {errors: error}, status: :unprocessable_entity
+    def update_failure(errors)
+      render json: { errors: errors }, status: :unprocessable_entity
     end
 
     def create
@@ -37,8 +37,8 @@ module Api
         status: :created
     end
 
-    def create_failure(error)
-      render json: {errors: error}, status: :unprocessable_entity
+    def create_failure(errors)
+      render json: { errors: errors }, status: :unprocessable_entity
     end
 
     def destroy
@@ -49,8 +49,8 @@ module Api
       head :no_content
     end
 
-    def destroy_failure(error)
-      render json: { errors: error }, status: :not_found
+    def destroy_failure(errors)
+      render json: { errors: errors }, status: :not_found
     end
 
     private
