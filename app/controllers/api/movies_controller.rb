@@ -1,12 +1,11 @@
 module Api
   class MoviesController < ApplicationController
-
     def index
-      render json: movie_service.all
+      render json: ListMovies.call
     end
 
     def show
-      movie_service.find(params[:id])
+      ShowMovie.call(id: params[:id], listener: self)
     end
 
     def show_success(record)
@@ -18,7 +17,7 @@ module Api
     end
 
     def update
-      movie_service.update(params[:id], movie_params)
+      UpdateMovie.call(id: params[:id], attributes: movie_params, listener: self)
     end
 
     def update_success(record)
@@ -30,7 +29,7 @@ module Api
     end
 
     def create
-      movie_service.create(movie_params)
+      CreateMovie.call(attributes: movie_params, listener: self)
     end
 
     def create_success(record)
@@ -43,7 +42,7 @@ module Api
     end
 
     def destroy
-      movie_service.destroy(params[:id])
+      DestroyMovie.call(id: params[:id], listener: self)
     end
 
     def destroy_success(_)
@@ -58,10 +57,6 @@ module Api
 
     def movie_params
       params.require(:movie).permit(:title, :director)
-    end
-
-    def movie_service
-      MovieService.new(listener: self)
     end
 
   end
