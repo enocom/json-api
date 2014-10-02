@@ -73,10 +73,11 @@ class MovieRepository
   end
 
   def failed_result(id)
+    error = {base: "A record with 'id'=#{id} was not found."}
     StoreResult.new(
       entity: nil,
       success: false,
-      errors: {base: "A record with 'id'=#{id} was not found."}
+      errors: ErrorFactory.create(error)
     )
   end
 

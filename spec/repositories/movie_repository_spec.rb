@@ -80,7 +80,7 @@ describe MovieRepository do
       expect(result.class).to eq StoreResult
       expect(result.success?).to eq false
       expect(result.entity).to be_nil
-      expect(result.errors).to eq({base: "A record with 'id'=999 was not found."})
+      expect(result.errors).to eq([{field: "base", message: "A record with 'id'=999 was not found."}])
     end
 
     it "returns errors when updating a non-existent record" do
@@ -89,7 +89,7 @@ describe MovieRepository do
       expect(result.class).to eq StoreResult
       expect(result.success?).to eq false
       expect(result.entity).to be_nil
-      expect(result.errors).to eq({base: "A record with 'id'=999 was not found."})
+      expect(result.errors).to eq([{field: "base", message: "A record with 'id'=999 was not found."}])
     end
 
     it "returns false when deleting a non-existent record" do
@@ -98,7 +98,7 @@ describe MovieRepository do
       expect(result.class).to eq StoreResult
       expect(result.success?).to eq false
       expect(result.entity).to be_nil
-      expect(result.errors).to eq({base: "A record with 'id'=999 was not found."})
+      expect(result.errors).to eq([{field: "base", message: "A record with 'id'=999 was not found."}])
     end
 
     it "returns validation errors for an invalid update" do
