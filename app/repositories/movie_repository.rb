@@ -10,7 +10,8 @@ class MovieRepository
   end
 
   def add(entity)
-    record = dao.new(entity.attributes)
+    whitelisted_keys = entity.attributes.reject { |k, _| k == :id }
+    record = dao.new(whitelisted_keys)
 
     if record.save
       return successful_result(record)

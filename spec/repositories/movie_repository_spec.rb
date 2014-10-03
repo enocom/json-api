@@ -14,6 +14,18 @@ describe MovieRepository do
     }.to change(MovieDao, :count).by(1)
   end
 
+  it "ignores the ID attribute when persisting movies" do
+    movie = MovieEntity.new(
+      id: 999,
+      :title => "Rashomon",
+      :director => "Kurozawa Akira"
+    )
+
+    result = repository.add(movie)
+
+    expect(result.entity.id).not_to eq 999
+  end
+
   it "returns all the persisted movies" do
     MovieDao.create(:title => "Rear Window", :director => "Alfred Hitchcock")
     MovieDao.create(:title => "Psycho", :director => "Alfred Hitchcock")
