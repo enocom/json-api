@@ -16,12 +16,6 @@ class MovieEntity
     instance_values.symbolize_keys
   end
 
-  def attributes=(hash)
-    hash.each do |key, value|
-      send("#{key}=", value)
-    end
-  end
-
   def persisted?
     !id.nil?
   end
