@@ -1,6 +1,7 @@
 source "https://rubygems.org"
 ruby "2.1.2"
 
+gem "rack-cors", :require => "rack/cors"
 gem "pg"
 gem "pry"
 gem "rails", "4.1.5"

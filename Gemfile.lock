@@ -67,6 +67,7 @@ GEM
       method_source (~> 0.8.1)
       slop (~> 3.4)
     rack (1.5.2)
+    rack-cors (0.2.9)
     rack-test (0.6.2)
       rack (>= 1.0)
     rails (4.1.5)
@@ -141,6 +142,7 @@ DEPENDENCIES
   pg
   poltergeist
   pry
+  rack-cors
   rails (= 4.1.5)
   rails_12factor
   rspec-rails

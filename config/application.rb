@@ -9,9 +9,18 @@ Bundler.setup(:default, Rails.env)
 # Require pry here to set its as the default for console
 require "pry"
 
+require "rack/cors"
+
 module JsonRails
   class Application < Rails::Application
     config.i18n.enforce_available_locales = true
     config.console = Pry
+
+    config.middleware.insert_before "ActionDispatch::Static", "Rack::Cors" do
+      allow do
+        origins "*"
+        resource "*", :headers => :any, :methods => [:get, :post, :delete, :put, :options]
+      end
+    end
   end
 end
