@@ -25,28 +25,24 @@ module Api
     end
 
     def create
-      CreateMovie.call(attributes: movie_params, listener: self)
-    end
+      result = CreateMovie.call(attributes: movie_params, listener: self)
 
-    def create_success(record)
-      render json: record, location: api_movie_path(record.id),
-        status: :created
-    end
-
-    def create_failure(errors)
-      render json: { errors: errors }, status: :unprocessable_entity
+      if result.success?
+        render json: result.entity, location: api_movie_path(result.entity.id),
+          status: :created
+      else
+        render json: { errors: result.errors }, status: :unprocessable_entity
+      end
     end
 
     def destroy
-      DestroyMovie.call(id: params[:id], listener: self)
-    end
+      result = MovieRepository.new.destroy(params[:id])
 
-    def destroy_success(_)
-      head :no_content
-    end
-
-    def destroy_failure(errors)
-      render json: { errors: errors }, status: :not_found
+      if result.success?
+        head :no_content
+      else
+        render json: { errors: result.errors }, status: :not_found
+      end
     end
 
     private
