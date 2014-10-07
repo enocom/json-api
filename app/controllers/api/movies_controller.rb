@@ -1,7 +1,7 @@
 module Api
   class MoviesController < ApplicationController
     def index
-      render json: ListMovies.call
+      render json: MovieRepository.new.all
     end
 
     def show
@@ -15,15 +15,13 @@ module Api
     end
 
     def update
-      UpdateMovie.call(id: params[:id], attributes: movie_params, listener: self)
-    end
+      result = UpdateMovie.call(id: params[:id], attributes: movie_params)
 
-    def update_success(record)
-      render json: record
-    end
-
-    def update_failure(errors)
-      render json: { errors: errors }, status: :unprocessable_entity
+      if result.success?
+        render json: result.entity
+      else
+        render json: { errors: result.errors }, status: :unprocessable_entity
+      end
     end
 
     def create
