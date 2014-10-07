@@ -5,15 +5,13 @@ module Api
     end
 
     def show
-      ShowMovie.call(id: params[:id], listener: self)
-    end
+      result = MovieRepository.new.find_by_id(params[:id])
 
-    def show_success(record)
-      render json: record
-    end
-
-    def show_failure(errors)
-      render json: { errors: errors }, status: :not_found
+      if result.success?
+        render json: result.entity
+      else
+        render json: { errors: result.errors }, status: :not_found
+      end
     end
 
     def update
