@@ -16,7 +16,7 @@ module JsonRails
     config.i18n.enforce_available_locales = true
     config.console = Pry
 
-    config.middleware.insert_before "ActionDispatch::Static", "Rack::Cors" do
+    config.middleware.use Rack::Cors do
       allow do
         origins "*"
         resource "*", :headers => :any, :methods => [:get, :post, :delete, :put, :options]
