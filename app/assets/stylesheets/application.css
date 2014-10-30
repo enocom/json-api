@@ -1,0 +1,15 @@
+/*
+*= require_self
+*/
+.page {
+  text-align: center;
+  border: 1px solid black;
+  width: 400px;
+  margin: 0 auto;
+  background: white;
+}
+
+body {
+  background: grey;
+  width: 100%;
+}

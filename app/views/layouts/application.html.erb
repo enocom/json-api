@@ -1,6 +1,16 @@
-<html>
+<!doctype html>
+<html lang="en">
+
   <head>
+    <meta charset="utf-8" />
     <title>json-api.rocks</title>
+    <%= stylesheet_link_tag "application", media: "all" %>
   </head>
-  <%= yield %>
+
+  <body>
+    <div class="page">
+      <%= yield %>
+    </div>
+  </body>
+
 </html>
