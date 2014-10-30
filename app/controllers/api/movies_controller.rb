@@ -25,7 +25,7 @@ module Api
     end
 
     def create
-      result = CreateMovie.call(attributes: movie_params, listener: self)
+      result = CreateMovie.call(attributes: movie_params)
 
       if result.success?
         render json: result.entity, location: api_movie_path(result.entity.id),
