@@ -18,5 +18,6 @@ group :test do
 end
 
 group :production do
+  gem "rails_serve_static_assets"
   gem "rails_12factor" # for Heroku logging
 end
