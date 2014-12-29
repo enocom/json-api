@@ -1,7 +1,7 @@
 require "lotus/model"
 
 def database_uri(config)
-  "postgres://localhost/#{config['database']}"
+  ENV["DATABASE_URL"] || "postgres://localhost/#{config['database']}"
 end
 
 Lotus::Model.configure do
