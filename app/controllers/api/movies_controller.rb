@@ -1,48 +1,43 @@
 module Api
   class MoviesController < ApplicationController
+
     def index
-      render json: MovieRepository.new.all
+      render json: MovieRepository.all
     end
 
     def show
-      result = MovieRepository.new.find_by_id(params[:id])
+      m = MovieRepository.find(params[:id])
 
-      if result.success?
-        render json: result.entity
+      if m
+        render json: m
       else
-        render json: { errors: result.errors }, status: :not_found
+        render json: { errors: ["Movie not found"] }, status: :not_found
       end
     end
 
     def update
-      result = UpdateMovie.call(id: params[:id], attributes: movie_params)
+      movie = Movie.new(movie_params.merge(id: params[:id]))
 
-      if result.success?
-        render json: result.entity
-      else
-        render json: { errors: result.errors }, status: :unprocessable_entity
-      end
+      MovieRepository.update(movie)
+
+      render json: movie
     end
 
     def create
-      result = CreateMovie.call(attributes: movie_params)
+      movie = Movie.new(title: movie_params[:title], director: movie_params[:director])
 
-      if result.success?
-        render json: result.entity, location: api_movie_path(result.entity.id),
-          status: :created
-      else
-        render json: { errors: result.errors }, status: :unprocessable_entity
-      end
+      MovieRepository.persist(movie)
+
+      render json: movie, location: api_movie_path(movie.id),
+        status: :created
     end
 
     def destroy
-      result = MovieRepository.new.destroy(params[:id])
+      movie = MovieRepository.find(params[:id])
 
-      if result.success?
-        head :no_content
-      else
-        render json: { errors: result.errors }, status: :not_found
-      end
+      MovieRepository.delete(movie)
+
+      head :no_content
     end
 
     private
