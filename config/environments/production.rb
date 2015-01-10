@@ -77,4 +77,7 @@ JsonRails::Application.configure do
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
+
+  # Minify React in development
+  config.react.variant = :production
 end

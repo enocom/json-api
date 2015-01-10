@@ -6,6 +6,7 @@ gem "lotus-model"
 gem "pg"
 gem "pry"
 gem "rails", "4.1.5"
+gem "react-rails"
 gem "thin"
 
 group :development, :test do
