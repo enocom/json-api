@@ -2,6 +2,7 @@ require "rails_helper"
 
 feature "Root Page" do
   scenario "visiting the root page" do
+    pending "Completion of React code"
     visit "/"
 
     expect(page).to have_content "json-api.rocks"
