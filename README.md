@@ -11,4 +11,4 @@ See the post [here](http://commandercoriander.net/blog/2014/01/04/test-driving-a
 
 The post [here](http://commandercoriander.net/blog/2014/01/11/curling-with-rails/) shows how to practice using `curl` with this app.
 
-See [here](https://github.com/enocom/angular_client) for an AngularJS client and [here](https://github.com/enocom/react_client) for a ReactJS client.
+See [here](https://github.com/enocom/angular_client) for an AngularJS client.
