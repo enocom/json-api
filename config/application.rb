@@ -8,9 +8,7 @@ require "sprockets/railtie"
 
 Bundler.setup(:default, Rails.env)
 
-# Require pry here to set its as the default for console
 require "pry"
-
 require "rack/cors"
 
 module JsonRails
