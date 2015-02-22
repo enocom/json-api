@@ -1,11 +1,12 @@
 source "https://rubygems.org"
 ruby "2.2.0"
 
+gem "oj"
 gem "rack-cors", :require => "rack/cors"
-gem "lotus-model"
 gem "pg"
 gem "pry"
 gem "rails", "4.1.5"
+gem "sequel"
 gem "thin"
 
 group :development, :test do

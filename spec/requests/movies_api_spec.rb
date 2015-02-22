@@ -7,17 +7,13 @@ describe "movies API", :type => :request do
 
   describe "GET /api/movies" do
     before do
-      MovieRepository.create(
-        Movie.new(
-          :title => "The Hobbit",
-          :director => "Peter Jackson"
-        )
+      TestObjectFactory.create_movie(
+        :title => "The Hobbit",
+        :director => "Peter Jackson"
       )
-      MovieRepository.create(
-        Movie.new(
-          :title => "The Fellowship of the Ring",
-          :director => "Peter Jackson"
-        )
+      TestObjectFactory.create_movie(
+        :title => "The Fellowship of the Ring",
+        :director => "Peter Jackson"
       )
     end
 
@@ -39,11 +35,9 @@ describe "movies API", :type => :request do
 
   describe "GET /api/movies/:id" do
     let(:movie) do
-      MovieRepository.create(
-        Movie.new(
-          :title    => "2001: A Space Odyssy",
-          :director => "Stanley Kubrick"
-        )
+      TestObjectFactory.create_movie(
+        :title    => "2001: A Space Odyssy",
+        :director => "Stanley Kubrick"
       )
     end
 
@@ -60,8 +54,9 @@ describe "movies API", :type => :request do
 
   describe "PUT /api/movies/:id" do
     let(:movie) do
-      MovieRepository.create(
-        Movie.new(:title => "Star Battles", :director => "Leorge Gucas")
+      TestObjectFactory.create_movie(
+        :title => "Star Battles",
+        :director => "Leorge Gucas"
       )
     end
 
@@ -105,8 +100,9 @@ describe "movies API", :type => :request do
 
   describe "DELETE /api/movies/:id" do
     let(:movie) do
-      MovieRepository.create(
-        Movie.new(:title => "The Shining", :director => "Stanley Kubrick")
+      TestObjectFactory.create_movie(
+        :title => "The Shining",
+        :director => "Stanley Kubrick"
       )
     end
 

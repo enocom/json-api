@@ -8,6 +8,8 @@ require "sprockets/railtie"
 
 Bundler.setup(:default, Rails.env)
 
+require_relative "database_connection"
+
 require "pry"
 require "rack/cors"
 

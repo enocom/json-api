@@ -6,29 +6,29 @@ module Api
     end
 
     def show
-      m = MovieRepository.find(params[:id])
+      movie = MovieRepository.find(params[:id])
 
-      if m
-        render json: m
+      if movie
+        render json: movie
       else
         render json: { errors: ["Movie not found"] }, status: :not_found
       end
     end
 
     def update
-      movie = Movie.new(movie_params.merge(id: params[:id]))
+      movie = MovieRepository.find(params[:id])
+      updated_movie = MovieRepository.update(movie, movie_params)
 
-      MovieRepository.update(movie)
-
-      render json: movie
+      render json: updated_movie
     end
 
     def create
-      movie = Movie.new(title: movie_params[:title], director: movie_params[:director])
+      movie = Movie.new(title: movie_params[:title],
+                        director: movie_params[:director])
 
-      MovieRepository.persist(movie)
+      persisted_movie = MovieRepository.persist(movie)
 
-      render json: movie, location: api_movie_path(movie.id),
+      render json: movie, location: api_movie_path(persisted_movie.id),
         status: :created
     end
 
