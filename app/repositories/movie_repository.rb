@@ -4,9 +4,6 @@ require_relative "../entities/movie"
 class MovieRepository
   MOVIES_TABLE = DB[:movies]
 
-  class RecordNotFoundError < StandardError
-  end
-
   def self.all
     MOVIES_TABLE.all.map do |data|
       build_movie(data)
@@ -19,8 +16,7 @@ class MovieRepository
     if movie_data
       build_movie(movie_data)
     else
-      error_message = "The record with ID #{movie_id} could not be found"
-      raise RecordNotFoundError, error_message
+      nil
     end
   end
 

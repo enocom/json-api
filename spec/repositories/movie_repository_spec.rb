@@ -29,10 +29,8 @@ describe MovieRepository do
       expect(found_movie.director).to eq "Bar"
     end
 
-    it "raises an error when no movie is found" do
-      expect {
-        MovieRepository.find(bogus_id = 123)
-      }.to raise_error(MovieRepository::RecordNotFoundError)
+    it "returns nil when a movie is not found" do
+      expect(MovieRepository.find(bogus_id = 123)).to be_nil
     end
   end
 

@@ -2,14 +2,18 @@ module Api
   class MoviesController < ApplicationController
 
     def index
-      render json: MovieRepository.all
+      all_movies = MovieRepository.all.map do |movie|
+        MovieSerializer.new(movie).as_json
+      end
+
+      render json: all_movies
     end
 
     def show
       movie = MovieRepository.find(params[:id])
 
       if movie
-        render json: movie
+        render json: MovieSerializer.new(movie).as_json
       else
         render json: { errors: ["Movie not found"] }, status: :not_found
       end
@@ -19,7 +23,7 @@ module Api
       movie = MovieRepository.find(params[:id])
       updated_movie = MovieRepository.update(movie, movie_params)
 
-      render json: updated_movie
+      render json: MovieSerializer.new(updated_movie).as_json
     end
 
     def create
@@ -28,7 +32,8 @@ module Api
 
       persisted_movie = MovieRepository.persist(movie)
 
-      render json: movie, location: api_movie_path(persisted_movie.id),
+      render json: MovieSerializer.new(movie).as_json,
+        location: api_movie_path(persisted_movie.id),
         status: :created
     end
 
