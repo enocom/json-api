@@ -32,7 +32,7 @@ module Api
 
       persisted_movie = MovieRepository.persist(movie)
 
-      render json: MovieSerializer.new(movie).as_json,
+      render json: MovieSerializer.new(persisted_movie).as_json,
         location: api_movie_path(persisted_movie.id),
         status: :created
     end

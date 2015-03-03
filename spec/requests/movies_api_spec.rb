@@ -93,6 +93,9 @@ describe "movies API", :type => :request do
 
       response_body = JSON.parse(response.body)
 
+      expect(response_body["id"]).to be_present
+      expect(response_body["director"]).to eq("Steven Spielberg")
+
       expect(response_body["title"])
         .to eq "Indiana Jones and the Temple of Doom"
     end
