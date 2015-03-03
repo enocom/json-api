@@ -61,7 +61,7 @@ describe "movies API", :type => :request do
     end
 
     let(:movie_params) do
-      { "movie" => { "title" => "Star Wars", "director" => "George Lucas" } }
+      { "title" => "Star Wars", "director" => "George Lucas" }
     end
 
     it "updates a movie" do
@@ -79,10 +79,8 @@ describe "movies API", :type => :request do
   describe "POST /api/movies" do
     let(:movie_params) do
       {
-        "movie" => {
-          "title"    => "Indiana Jones and the Temple of Doom",
-          "director" => "Steven Spielberg"
-        }
+        "title"    => "Indiana Jones and the Temple of Doom",
+        "director" => "Steven Spielberg"
       }
     end
 
