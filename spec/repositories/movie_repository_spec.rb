@@ -53,6 +53,11 @@ describe MovieRepository do
       expect(updated.id).to eq movie.id
       expect(updated.title).to eq "Oof"
       expect(updated.director).to eq "Rab"
+
+      sanity_check = MovieRepository.find(updated.id)
+      expect(sanity_check.id).to eq movie.id
+      expect(sanity_check.title).to eq "Oof"
+      expect(sanity_check.director).to eq "Rab"
     end
 
     it "accepts partial updates" do

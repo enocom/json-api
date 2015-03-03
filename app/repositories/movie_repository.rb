@@ -42,8 +42,8 @@ class MovieRepository
       end
     end
 
-    updated = MOVIES_TABLE[id: movie.id].update(whitelisted_attrs)
-    build_movie(updated)
+    MOVIES_TABLE.where(id: movie.id).update(whitelisted_attrs)
+    build_movie(movie.to_h.merge(whitelisted_attrs))
   end
 
   def self.delete(movie)

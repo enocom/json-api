@@ -65,7 +65,7 @@ describe "movies API", :type => :request do
     end
 
     it "updates a movie" do
-      put "/api/movies/#{movie.id}", movie_params.to_json, accept_and_return_json
+      patch "/api/movies/#{movie.id}", movie_params.to_json, accept_and_return_json
 
       expect(response.status).to be 200
 
