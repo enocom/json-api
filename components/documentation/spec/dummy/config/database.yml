@@ -1,0 +1,5 @@
+test:
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  database: documentation_dummy_test

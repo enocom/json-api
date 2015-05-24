@@ -1,8 +1,5 @@
 # Json-Api
 
-[![Circle CI](https://circleci.com/gh/enocom/json-api/tree/master.png?style=badge)](https://circleci.com/gh/enocom/json-api/tree/master)
-[![Code Climate](https://codeclimate.com/github/enocom/json-rails/badges/gpa.svg)](https://codeclimate.com/github/enocom/json-rails)
-
 A simple set of JSON RESTful endpoints using the repository pattern.
 
 This app lives at [json-api.rocks](http://json-api.rocks) and responds to requests at `/api/movies`.

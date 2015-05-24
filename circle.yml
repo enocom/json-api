@@ -1,5 +1,0 @@
-deployment:
-  acceptance:
-    branch: master
-    commands:
-      - ./deploy_to_acceptance.sh

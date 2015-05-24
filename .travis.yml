@@ -1,0 +1,7 @@
+gemfile:
+  - Gemfile
+  - components/app/Gemfile
+script:
+  - travis_retry ./test.sh
+before_install:
+  - cd $(dirname $BUNDLE_GEMFILE)
