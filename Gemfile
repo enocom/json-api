@@ -9,3 +9,7 @@ gem "pg"
 gem "rack-cors", :require => "rack/cors"
 gem "pry-rails"
 
+group :production do
+  gem "rails_12factor"
+end
+
