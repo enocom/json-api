@@ -1,5 +1,4 @@
 gemfile:
-  - Gemfile
   - components/documentation/Gemfile
   - components/movie_manager/Gemfile
 script:
