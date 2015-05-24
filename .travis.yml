@@ -1,3 +1,4 @@
+language: ruby
 gemfile:
   - components/documentation/Gemfile
   - components/movie_manager/Gemfile
