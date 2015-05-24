@@ -1,6 +1,7 @@
 gemfile:
   - Gemfile
-  - components/app/Gemfile
+  - components/documentation/Gemfile
+  - components/movie_manager/Gemfile
 script:
   - travis_retry ./test.sh
 before_install:
