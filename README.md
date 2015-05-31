@@ -15,7 +15,7 @@ There are two things which make this otherwise plain app interesting:
 
 For an introduction to how this app's API was written, see the post [here](http://commandercoriander.net/blog/2014/01/04/test-driving-a-json-api-in-rails/).
 
-If you would like to practice using `curl` while enteracting with the app, see the post [here](http://commandercoriander.net/blog/2014/01/11/curling-with-rails/).
+If you would like to practice using `curl` while interacting with the app, see the post [here](http://commandercoriander.net/blog/2014/01/11/curling-with-rails/).
 
 ## JavaScript Clients
 
