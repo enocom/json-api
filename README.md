@@ -6,6 +6,8 @@ A simple set of JSON RESTful endpoints using the repository pattern and Rails en
 
 ## About
 
+This app lives at [json-api.herokuapp.com](http://json-api.herokuapp.com) and responds to requests at `/api/movies`.
+
 There are two things which make this otherwise plain app interesting:
 
 1. Any interaction with ActiveRecord is hidden behind a repository interface. I have written about the rationale of doing this [here](http://commandercoriander.net/blog/2014/10/02/isolating-active-record/).
