@@ -1,7 +1,5 @@
 # Json-Api
 
-[![Build Status](https://travis-ci.org/enocom/json-api.svg?branch=master)](https://travis-ci.org/enocom/json-api)
-
 A simple set of JSON RESTful endpoints using the repository pattern and Rails engines.
 
 ## About
